@@ -8,7 +8,5 @@
         public int? GrowingDurationInDays { get; set; }
         public string? OptimalClimate { get; set; }
         public ICollection<PlantingSchedule> PlantingSchedules { get; set; }
-
-
     }
 }
