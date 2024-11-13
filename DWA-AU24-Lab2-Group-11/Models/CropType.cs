@@ -2,7 +2,7 @@
 {
     public enum CropType
     {
-        Grain,
+        Grain = 120,
         Vegetable,
         Fruit,
         Herb,
