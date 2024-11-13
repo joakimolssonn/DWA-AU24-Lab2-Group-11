@@ -6,7 +6,7 @@ namespace DWA_AU24_Lab2_Group_11.Models
     {
         public int Id { get; set; }
         public int Cropid { get; set; }
-        public Crop Crop { get; set; }
+        public Crop? Crop { get; set; }
         
         [DataType(DataType.Date)]
         public DateTime PlantingDate { get; set; }
