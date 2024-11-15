@@ -82,7 +82,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
             {
                 return NotFound();
             }
-            ViewData["Cropid"] = new SelectList(_context.Crop, "Id", "Id", plantingSchedule.Cropid);
+            ViewData["Cropid"] = new SelectList(_context.Crop, "Id", "Name", plantingSchedule.Cropid);
             return View(plantingSchedule);
         }
 
@@ -118,7 +118,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Cropid"] = new SelectList(_context.Crop, "Id", "Id", plantingSchedule.Cropid);
+            ViewData["Cropid"] = new SelectList(_context.Crop, "Id", "Name", plantingSchedule.Cropid);
             return View(plantingSchedule);
         }
 
