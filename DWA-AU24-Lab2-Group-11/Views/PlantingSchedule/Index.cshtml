@@ -22,6 +22,9 @@
                 @Html.DisplayNameFor(model => model.OptimalPlantingDate)
             </th>
             <th>
+                Expected Harvest Date
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Location)
             </th>
             <th></th>
@@ -38,6 +41,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OptimalPlantingDate)
+            </td>
+            <td>
+                @item.ExpectedHarvestDate?.ToShortDateString()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Location)

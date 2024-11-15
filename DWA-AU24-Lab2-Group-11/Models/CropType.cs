@@ -3,13 +3,13 @@
     public enum CropType
     {
         Grain = 120,
-        Vegetable,
-        Fruit,
-        Herb,
-        Legume,
-        Root,
-        Tuber,
-        Nut,
-        Cereal
+        Vegetable = 90,
+        Fruit = 100,
+        Herb = 80,
+        Legume = 50,
+        Root = 40,
+        Tuber = 23,
+        Nut = 120,
+        Cereal = 90
     }
 }
