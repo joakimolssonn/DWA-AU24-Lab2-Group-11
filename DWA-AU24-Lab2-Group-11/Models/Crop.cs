@@ -13,6 +13,13 @@ namespace DWA_AU24_Lab2_Group_11.Models
         public CropType Type { get; set; }
         [Range(1, 365, ErrorMessage = "Growing duration must be between 1 and 365 days.")]
         public int? GrowingDurationInDays { get; set; }
+        public int EffectiveGrowingDurationInDays
+        {
+            get
+            {
+                return GrowingDurationInDays ?? (int)Type;
+            }
+        }
 
         [StringLength(100)]
         public string? OptimalClimate { get; set; }

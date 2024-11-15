@@ -13,5 +13,18 @@ namespace DWA_AU24_Lab2_Group_11.Models
         public DateTime? OptimalPlantingDate { get; set; }
         public string? Location { get; set; }
 
+        public DateTime? ExpectedHarvestDate
+        {
+            get
+            {
+                if (Crop != null)
+                {
+                    return PlantingDate.AddDays(Crop.EffectiveGrowingDurationInDays); // Use EffectiveGrowingDurationInDays here
+                }
+                return null;
+            }
+
+        }
+
     }
 }
