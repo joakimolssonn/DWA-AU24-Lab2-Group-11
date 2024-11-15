@@ -10,7 +10,7 @@ namespace DWA_AU24_Lab2_Group_11.Models
         [DataType(DataType.Date)]
         public DateTime PlantingDate { get; set; }
         [DataType(DataType.Date)]
-        public DateTime? HarvestDate { get; set; }
+        public DateTime HarvestDate { get; set; }
         public string? Notes { get; set; }
 
     }

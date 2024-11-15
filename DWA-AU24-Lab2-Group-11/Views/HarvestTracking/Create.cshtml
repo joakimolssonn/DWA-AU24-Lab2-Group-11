@@ -1,25 +1,20 @@
 ﻿@model DWA_AU24_Lab2_Group_11.Models.HarvestTracking
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Harvest Tracking";
 }
 
-<h1>Create</h1>
+<h1>Create Harvest Tracking</h1>
 
 <h4>HarvestTracking</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="HarvestDate" class="control-label"></label>
-                <input asp-for="HarvestDate" class="form-control" />
-                <span asp-validation-for="HarvestDate" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="PlantingScheduleId" class="control-label"></label>
-                <select asp-for="PlantingScheduleId" class ="form-control" asp-items="ViewBag.PlantingScheduleId"></select>
+                <select asp-for="PlantingScheduleId" class="form-control" asp-items="ViewBag.PlantingScheduleId"></select>
+                <span asp-validation-for="PlantingScheduleId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

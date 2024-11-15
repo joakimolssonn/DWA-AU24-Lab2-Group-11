@@ -22,8 +22,12 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         // GET: HarvestTracking
         public async Task<IActionResult> Index()
         {
-            var farmTrackContext = _context.HarvestTracking.Include(h => h.PlantingSchedule);
-            return View(await farmTrackContext.ToListAsync());
+            var harvestTrackings = await _context.HarvestTracking
+                .Include(h => h.PlantingSchedule)
+                    .ThenInclude(p => p.Crop) // Include Crop for name and duration
+                .ToListAsync();
+
+            return View(harvestTrackings);
         }
 
         // GET: HarvestTracking/Details/5
@@ -36,7 +40,9 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
 
             var harvestTracking = await _context.HarvestTracking
                 .Include(h => h.PlantingSchedule)
+                    .ThenInclude(p => p.Crop)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (harvestTracking == null)
             {
                 return NotFound();
@@ -48,7 +54,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         // GET: HarvestTracking/Create
         public IActionResult Create()
         {
-            ViewData["PlantingScheduleId"] = new SelectList(_context.Set<PlantingSchedule>(), "Id", "Id");
+            ViewData["PlantingScheduleId"] = new SelectList(_context.PlantingSchedule, "Id", "Id");
             return View();
         }
 
@@ -57,15 +63,29 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,HarvestDate,PlantingScheduleId")] HarvestTracking harvestTracking)
+        public async Task<IActionResult> Create([Bind("Id,PlantingScheduleId")] HarvestTracking harvestTracking)
         {
             if (ModelState.IsValid)
             {
+                // Ensure the PlantingSchedule is valid
+                var plantingSchedule = await _context.PlantingSchedule
+                    .Include(p => p.Crop)
+                    .FirstOrDefaultAsync(p => p.Id == harvestTracking.PlantingScheduleId);
+
+                if (plantingSchedule == null)
+                {
+                    ModelState.AddModelError("", "Invalid Planting Schedule selected.");
+                    ViewData["PlantingScheduleId"] = new SelectList(_context.PlantingSchedule, "Id", "Id");
+                    return View(harvestTracking);
+                }
+
+                // No need to add HarvestDate manually; rely on ExpectedHarvestDate
                 _context.Add(harvestTracking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PlantingScheduleId"] = new SelectList(_context.Set<PlantingSchedule>(), "Id", "Id", harvestTracking.PlantingScheduleId);
+
+            ViewData["PlantingScheduleId"] = new SelectList(_context.PlantingSchedule, "Id", "Id");
             return View(harvestTracking);
         }
 
@@ -82,7 +102,8 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
             {
                 return NotFound();
             }
-            ViewData["PlantingScheduleId"] = new SelectList(_context.Set<PlantingSchedule>(), "Id", "Id", harvestTracking.PlantingScheduleId);
+
+            ViewData["PlantingScheduleId"] = new SelectList(_context.PlantingSchedule, "Id", "Id", harvestTracking.PlantingScheduleId);
             return View(harvestTracking);
         }
 
@@ -91,7 +112,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,HarvestDate,PlantingScheduleId")] HarvestTracking harvestTracking)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PlantingScheduleId")] HarvestTracking harvestTracking)
         {
             if (id != harvestTracking.Id)
             {
@@ -118,7 +139,8 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PlantingScheduleId"] = new SelectList(_context.Set<PlantingSchedule>(), "Id", "Id", harvestTracking.PlantingScheduleId);
+
+            ViewData["PlantingScheduleId"] = new SelectList(_context.PlantingSchedule, "Id", "Id", harvestTracking.PlantingScheduleId);
             return View(harvestTracking);
         }
 
@@ -133,6 +155,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
             var harvestTracking = await _context.HarvestTracking
                 .Include(h => h.PlantingSchedule)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (harvestTracking == null)
             {
                 return NotFound();
