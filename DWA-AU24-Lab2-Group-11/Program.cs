@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using DWA_AU24_Lab2_Group_11.Data;
+using DWA_AU24_Lab2_Group_11.Services;
 namespace DWA_AU24_Lab2_Group_11
 {
     public class Program
@@ -11,6 +12,8 @@ namespace DWA_AU24_Lab2_Group_11
             builder.Services.AddDbContext<FarmTrackContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("FarmTrackContext") ?? throw new InvalidOperationException("Connection string 'FarmTrackContext' not found.")));
 
+
+            builder.Services.AddHostedService<NotificationService>();
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
