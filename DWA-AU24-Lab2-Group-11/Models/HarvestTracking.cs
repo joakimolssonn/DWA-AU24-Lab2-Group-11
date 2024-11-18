@@ -9,13 +9,32 @@ namespace DWA_AU24_Lab2_Group_11.Models
         public DateTime HarvestDate { get; set; } // Ta bort? Denna är kopplad med andra entiteter 
         public int PlantingScheduleId { get; set; }
         public PlantingSchedule? PlantingSchedule { get; set; }
-        public int? DaysUntilHarvest
+        public string? DaysUntilHarvest
         {
             get
             {
                 if (PlantingSchedule?.ExpectedHarvestDate.HasValue == true)
                 {
-                    return (PlantingSchedule.ExpectedHarvestDate.Value - DateTime.Now).Days;
+                    var timeSpan = PlantingSchedule.ExpectedHarvestDate.Value - DateTime.Now;
+
+                    // Check if the harvest date has passed
+                    if (timeSpan.TotalSeconds <= 0)
+                    {
+                        return "Harvest time has passed!";
+                    }
+
+                    // Calculate days and hours
+                    int remainingDays = timeSpan.Days;
+                    int remainingHours = timeSpan.Hours;
+
+                    if (remainingDays > 0)
+                    {
+                        return $"{remainingDays} days, {remainingHours} hours";
+                    }
+                    else
+                    {
+                        return $"{remainingHours} hours remaining";
+                    }
                 }
                 return null;
             }

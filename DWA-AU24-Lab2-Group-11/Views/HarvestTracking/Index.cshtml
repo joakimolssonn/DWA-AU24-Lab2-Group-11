@@ -25,7 +25,7 @@
                 Expected Harvest Date
             </th>
             <th>
-                Countdown to Harvest (Days)
+                Countdown to Harvest
             </th>
             <th></th>
         </tr>
@@ -47,9 +47,7 @@
                     @item.PlantingSchedule.ExpectedHarvestDate?.ToShortDateString()
                 </td>
                 <td>
-                    @(item.PlantingSchedule.ExpectedHarvestDate.HasValue
-                        ? (item.PlantingSchedule.ExpectedHarvestDate.Value - DateTime.Now).Days
-                        : "N/A")
+                    @item.DaysUntilHarvest 
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
