@@ -11,6 +11,7 @@ namespace DWA_AU24_Lab2_Group_11.Models
         [DataType(DataType.Date)]
         public DateTime PlantingDate { get; set; }
         [DataType(DataType.Date)]
+        [Display(Name="Optimal Planting Date")]
         public DateTime? OptimalPlantingDate { get; set; }
         public string? Location { get; set; }
 
