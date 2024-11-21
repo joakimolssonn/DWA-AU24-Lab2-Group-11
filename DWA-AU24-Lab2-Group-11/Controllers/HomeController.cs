@@ -24,11 +24,31 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
 
         public IActionResult Index()
         {
-            // Fetch all unread notifications (you can modify this to show only unread ones)
+            // Fetch all unread notifications (ensure it's not null)
             var notifications = _context.Notification
-                                         .Where(n => !n.IsRead)  // Optionally filter for unread notifications
+                                         .Where(n => !n.IsRead)
                                          .ToList();
-            return View(notifications); // Pass notifications to the view
+
+            if (notifications == null || !notifications.Any())
+            {
+                _logger.LogWarning("No unread notifications found.");
+            }
+
+            // Fetch Tasks where the date has passed or is now and IsCompleted is false
+            var tasks = _context.Task
+                                .Where(t => t.TaskDate <= DateTime.Now && !t.IsCompleted)
+                                .ToList();
+
+            if (tasks == null || !tasks.Any())
+            {
+                _logger.LogWarning("No tasks found for reminder.");
+            }
+
+            // Pass data to the view using ViewBag
+            ViewBag.Notifications = notifications;
+            ViewBag.Tasks = tasks;
+
+            return View(); // Notifications as the main model
         }
 
         // Mark notification as read
@@ -43,6 +63,19 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
             }
 
             return RedirectToAction("Index"); // Redirect to the Index page after marking as read
+        }
+
+        [HttpPost]
+        public IActionResult MarkTaskAsCompleted(int id)
+        {
+            var task = _context.Task.Find(id);
+            if (task != null)
+            {
+                task.IsCompleted = true;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

@@ -1,18 +1,17 @@
-﻿@model IEnumerable<DWA_AU24_Lab2_Group_11.Models.Notification>
-
-@{
+﻿@{
     ViewData["Title"] = "Home";
 }
 
 <h1>@ViewData["Title"]</h1>
 
+<!-- Visar Notifications -->
 <div>
     <h2>Notifications</h2>
 
-    @if (Model.Any())  
+    @if (ViewBag.Notifications != null && ((List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications).Any())
     {
         <ul>
-            @foreach (var notification in Model)
+            @foreach (var notification in (List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications)
             {
                 <li>
                     <p>@notification.Message</p>
@@ -29,5 +28,33 @@
     else
     {
         <p>No new notifications.</p>
+    }
+</div>
+
+<!-- Visar Tasks -->
+<div>
+    <h2>Tasks</h2>
+
+    @if (ViewBag.Tasks != null && ((List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks).Any())
+    {
+        <ul>
+            @foreach (var task in (List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks)
+            {
+                <li>
+                    <p><strong>@task.TaskName</strong></p>
+                    <p>@task.TaskDescription</p>
+                    <p><strong>Due Date:</strong> @task.TaskDate.ToString("f")</p>
+
+                    <!-- Checkbox for marking task as completed -->
+                    <form method="post" action="@Url.Action("MarkTaskAsCompleted", "Home", new { id = task.Id })">                        
+                        <button type="submit" class="btn btn-success">Mark as Completed</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No upcoming tasks.</p>
     }
 </div>
