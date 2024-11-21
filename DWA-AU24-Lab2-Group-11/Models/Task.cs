@@ -11,7 +11,7 @@ namespace DWA_AU24_Lab2_Group_11.Models
         public DateTime TaskDate { get; set; }
         public bool IsCompleted { get; set; }
         public int? PlantingScheduleId { get; set; }
-        public PlantingSchedule PlantingSchedule { get; set; }
+        public PlantingSchedule? PlantingSchedule { get; set; }
 
     }
 }
