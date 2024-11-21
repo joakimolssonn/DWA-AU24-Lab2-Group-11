@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using DWA_AU24_Lab2_Group_11.Data;
 using DWA_AU24_Lab2_Group_11.Services;
+using Microsoft.AspNetCore.Identity;
+using DWA_AU24_Lab2_Group_11.Models;
 namespace DWA_AU24_Lab2_Group_11
 {
     public class Program
@@ -9,8 +11,14 @@ namespace DWA_AU24_Lab2_Group_11
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
             builder.Services.AddDbContext<FarmTrackContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("FarmTrackContext") ?? throw new InvalidOperationException("Connection string 'FarmTrackContext' not found.")));
+
+            builder.Services.AddDbContext<DWA_AU24_Lab2_Group_11Context>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DWA_AU24_Lab2_Group_11Context") ?? throw new InvalidOperationException("Connection string 'DWA_AU24_Lab2_Group_11Context' not found.")));
+
+            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<DWA_AU24_Lab2_Group_11Context>();
 
 
             builder.Services.AddHostedService<NotificationService>();
@@ -37,6 +45,8 @@ namespace DWA_AU24_Lab2_Group_11
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.MapRazorPages();
 
             app.Run();
         }

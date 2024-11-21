@@ -1,6 +1,7 @@
 using DWA_AU24_Lab2_Group_11.Data;
 using DWA_AU24_Lab2_Group_11.Models;
 using DWA_AU24_Lab2_Group_11.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.Linq;
 
 namespace DWA_AU24_Lab2_Group_11.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
