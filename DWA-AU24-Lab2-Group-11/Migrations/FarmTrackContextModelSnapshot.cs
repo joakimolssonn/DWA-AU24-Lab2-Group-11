@@ -55,21 +55,21 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                             Id = 1,
                             GrowingDurationInDays = 90,
                             Name = "Wheat",
-                            Type = 0
+                            Type = 120
                         },
                         new
                         {
                             Id = 2,
                             GrowingDurationInDays = 120,
                             Name = "Tomato",
-                            Type = 1
+                            Type = 90
                         },
                         new
                         {
                             Id = 3,
                             GrowingDurationInDays = 110,
                             Name = "Corn",
-                            Type = 0
+                            Type = 120
                         });
                 });
 
@@ -81,7 +81,7 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("HarvestDate")
+                    b.Property<DateTime>("HarvestDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Notes")
@@ -103,15 +103,15 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         new
                         {
                             Id = 1,
-                            HarvestDate = new DateTime(2024, 11, 23, 15, 32, 33, 367, DateTimeKind.Local).AddTicks(5998),
-                            PlantingDate = new DateTime(2024, 11, 13, 15, 32, 33, 367, DateTimeKind.Local).AddTicks(5995),
+                            HarvestDate = new DateTime(2024, 12, 1, 14, 29, 10, 33, DateTimeKind.Local).AddTicks(3619),
+                            PlantingDate = new DateTime(2024, 11, 21, 14, 29, 10, 33, DateTimeKind.Local).AddTicks(3615),
                             PlantingScheduleId = 1
                         },
                         new
                         {
                             Id = 2,
-                            HarvestDate = new DateTime(2024, 11, 23, 15, 32, 33, 367, DateTimeKind.Local).AddTicks(6005),
-                            PlantingDate = new DateTime(2024, 11, 13, 15, 32, 33, 367, DateTimeKind.Local).AddTicks(6003),
+                            HarvestDate = new DateTime(2024, 12, 1, 14, 29, 10, 33, DateTimeKind.Local).AddTicks(3626),
+                            PlantingDate = new DateTime(2024, 11, 21, 14, 29, 10, 33, DateTimeKind.Local).AddTicks(3623),
                             PlantingScheduleId = 2
                         });
                 });
@@ -140,13 +140,13 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         new
                         {
                             Id = 1,
-                            HarvestDate = new DateTime(2024, 11, 23, 15, 32, 33, 367, DateTimeKind.Local).AddTicks(6032),
+                            HarvestDate = new DateTime(2024, 12, 1, 14, 29, 10, 33, DateTimeKind.Local).AddTicks(3645),
                             PlantingScheduleId = 1
                         },
                         new
                         {
                             Id = 2,
-                            HarvestDate = new DateTime(2024, 11, 23, 15, 32, 33, 367, DateTimeKind.Local).AddTicks(6036),
+                            HarvestDate = new DateTime(2024, 12, 1, 14, 29, 10, 33, DateTimeKind.Local).AddTicks(3649),
                             PlantingScheduleId = 2
                         });
                 });
@@ -211,14 +211,14 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                             Id = 1,
                             Cropid = 1,
                             Location = "Field A",
-                            PlantingDate = new DateTime(2024, 10, 14, 15, 32, 33, 367, DateTimeKind.Local).AddTicks(5913)
+                            PlantingDate = new DateTime(2024, 10, 22, 14, 29, 10, 33, DateTimeKind.Local).AddTicks(3540)
                         },
                         new
                         {
                             Id = 2,
                             Cropid = 2,
                             Location = "Greenhouse",
-                            PlantingDate = new DateTime(2024, 9, 14, 15, 32, 33, 367, DateTimeKind.Local).AddTicks(5963)
+                            PlantingDate = new DateTime(2024, 9, 22, 14, 29, 10, 33, DateTimeKind.Local).AddTicks(3597)
                         });
                 });
 
@@ -246,79 +246,11 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PlantingScheduleId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Task");
-                });
-
-            modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.GrowthHistory", b =>
@@ -371,25 +303,12 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         .WithMany()
                         .HasForeignKey("PlantingScheduleId");
 
-                    b.HasOne("DWA_AU24_Lab2_Group_11.Models.User", "User")
-                        .WithMany("Tasks")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("PlantingSchedule");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.Crop", b =>
                 {
                     b.Navigation("PlantingSchedules");
-                });
-
-            modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.User", b =>
-                {
-                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

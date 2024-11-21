@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DWA_AU24_Lab2_Group_11.Data;
 using DWA_AU24_Lab2_Group_11.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DWA_AU24_Lab2_Group_11.Controllers
 {
+    [Authorize]
     public class HarvestTrackingController : Controller
     {
         private readonly FarmTrackContext _context;
