@@ -23,7 +23,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         // GET: Task
         public async Task<IActionResult> Index()
         {
-            var farmTrackContext = _context.Task.Include(t => t.PlantingSchedule).Include(t => t.User);
+            var farmTrackContext = _context.Task.Include(t => t.PlantingSchedule);
             return View(await farmTrackContext.ToListAsync());
         }
 
@@ -37,7 +37,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
 
             var task = await _context.Task
                 .Include(t => t.PlantingSchedule)
-                .Include(t => t.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (task == null)
             {
@@ -69,7 +68,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PlantingScheduleId"] = new SelectList(_context.PlantingSchedule, "Id", "Id", task.PlantingScheduleId);
-            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", task.UserId);
             return View(task);
         }
 
@@ -87,7 +85,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 return NotFound();
             }
             ViewData["PlantingScheduleId"] = new SelectList(_context.PlantingSchedule, "Id", "Id", task.PlantingScheduleId);
-            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", task.UserId);
             return View(task);
         }
 
@@ -124,7 +121,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PlantingScheduleId"] = new SelectList(_context.PlantingSchedule, "Id", "Id", task.PlantingScheduleId);
-            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", task.UserId);
             return View(task);
         }
 
@@ -138,7 +134,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
 
             var task = await _context.Task
                 .Include(t => t.PlantingSchedule)
-                .Include(t => t.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (task == null)
             {

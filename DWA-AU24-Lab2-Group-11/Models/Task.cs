@@ -10,8 +10,6 @@ namespace DWA_AU24_Lab2_Group_11.Models
         [DataType(DataType.DateTime)]
         public DateTime TaskDate { get; set; }
         public bool IsCompleted { get; set; }
-        public string UserId { get; set; }
-        public User User { get; set; }
         public int? PlantingScheduleId { get; set; }
         public PlantingSchedule PlantingSchedule { get; set; }
 
