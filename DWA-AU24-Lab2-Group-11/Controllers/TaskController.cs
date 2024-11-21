@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using DWA_AU24_Lab2_Group_11.Data;
 using DWA_AU24_Lab2_Group_11.Models;
 using Task = DWA_AU24_Lab2_Group_11.Models.Task;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DWA_AU24_Lab2_Group_11.Controllers
 {
+    [Authorize]
     public class TaskController : Controller
     {
         private readonly FarmTrackContext _context;
