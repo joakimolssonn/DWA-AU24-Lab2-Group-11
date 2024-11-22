@@ -38,13 +38,7 @@ namespace DWA_AU24_Lab2_Group_11.Data
                 new PlantingSchedule { Id = 1, Cropid = 1, PlantingDate = DateTime.Now.AddDays(-30), Location = "Field A" },
                 new PlantingSchedule { Id = 2, Cropid = 2, PlantingDate = DateTime.Now.AddDays(-60), Location = "Greenhouse" }
             );
-
-
-            // Seeding data for GrowthHistory
-            modelBuilder.Entity<GrowthHistory>().HasData(
-                new GrowthHistory { Id = 1, PlantingScheduleId = 1, PlantingDate = DateTime.Now, HarvestDate = DateTime.Now.AddDays(10) },
-                new GrowthHistory { Id = 2, PlantingScheduleId = 2, PlantingDate = DateTime.Now, HarvestDate = DateTime.Now.AddDays(10) }
-            );
+            
 
             // Seeding data for HarvestTracking
             modelBuilder.Entity<HarvestTracking>().HasData(

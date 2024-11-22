@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DWA_AU24_Lab2_Group_11.Migrations
 {
     /// <inheritdoc />
@@ -17,41 +19,13 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    GrowingDurationInDays = table.Column<int>(type: "int", nullable: true),
-                    OptimalClimate = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    GrowingDurationInDays = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Crop", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,8 +57,6 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlantingScheduleId = table.Column<int>(type: "int", nullable: false),
-                    PlantingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    HarvestDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -104,7 +76,7 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HarvestDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HarvestDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PlantingScheduleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -150,7 +122,6 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                     TaskDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TaskDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsCompleted = table.Column<bool>(type: "bit", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PlantingScheduleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -161,12 +132,67 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         column: x => x.PlantingScheduleId,
                         principalTable: "PlantingSchedule",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WeatherData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Temperature = table.Column<double>(type: "float", nullable: false),
+                    Humidity = table.Column<double>(type: "float", nullable: false),
+                    Rainfall = table.Column<double>(type: "float", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PlantingScheduleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WeatherData", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Task_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
+                        name: "FK_WeatherData_PlantingSchedule_PlantingScheduleId",
+                        column: x => x.PlantingScheduleId,
+                        principalTable: "PlantingSchedule",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Crop",
+                columns: new[] { "Id", "GrowingDurationInDays", "Name", "Type" },
+                values: new object[,]
+                {
+                    { 1, 90, "Wheat", 120 },
+                    { 2, 120, "Tomato", 90 },
+                    { 3, 110, "Corn", 120 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PlantingSchedule",
+                columns: new[] { "Id", "Cropid", "Location", "OptimalPlantingDate", "PlantingDate" },
+                values: new object[,]
+                {
+                    { 1, 1, "Field A", null, new DateTime(2024, 10, 23, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(257) },
+                    { 2, 2, "Greenhouse", null, new DateTime(2024, 9, 23, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(312) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "HarvestTracking",
+                columns: new[] { "Id", "HarvestDate", "PlantingScheduleId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 12, 2, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(339), 1 },
+                    { 2, new DateTime(2024, 12, 2, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(345), 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "WeatherData",
+                columns: new[] { "Id", "Date", "Humidity", "Location", "PlantingScheduleId", "Rainfall", "Temperature" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 11, 22, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(371), 60.0, "Field A", 1, 5.0, 25.0 },
+                    { 2, new DateTime(2024, 11, 22, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(375), 70.0, "Greenhouse", 2, 10.0, 30.0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -195,9 +221,9 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                 column: "PlantingScheduleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Task_UserId",
-                table: "Task",
-                column: "UserId");
+                name: "IX_WeatherData_PlantingScheduleId",
+                table: "WeatherData",
+                column: "PlantingScheduleId");
         }
 
         /// <inheritdoc />
@@ -216,10 +242,10 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                 name: "Task");
 
             migrationBuilder.DropTable(
-                name: "PlantingSchedule");
+                name: "WeatherData");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "PlantingSchedule");
 
             migrationBuilder.DropTable(
                 name: "Crop");

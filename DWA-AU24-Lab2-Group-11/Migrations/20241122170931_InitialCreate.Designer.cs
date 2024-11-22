@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DWA_AU24_Lab2_Group_11.Migrations
 {
     [DbContext(typeof(FarmTrackContext))]
-    [Migration("20241021151728_InitialCreate")]
+    [Migration("20241122170931_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -38,10 +38,8 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OptimalClimate")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -49,6 +47,29 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Crop");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GrowingDurationInDays = 90,
+                            Name = "Wheat",
+                            Type = 120
+                        },
+                        new
+                        {
+                            Id = 2,
+                            GrowingDurationInDays = 120,
+                            Name = "Tomato",
+                            Type = 90
+                        },
+                        new
+                        {
+                            Id = 3,
+                            GrowingDurationInDays = 110,
+                            Name = "Corn",
+                            Type = 120
+                        });
                 });
 
             modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.GrowthHistory", b =>
@@ -59,14 +80,8 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("HarvestDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PlantingDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("PlantingScheduleId")
                         .HasColumnType("int");
@@ -86,7 +101,7 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("HarvestDate")
+                    b.Property<DateTime?>("HarvestDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("PlantingScheduleId")
@@ -97,6 +112,20 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                     b.HasIndex("PlantingScheduleId");
 
                     b.ToTable("HarvestTracking");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            HarvestDate = new DateTime(2024, 12, 2, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(339),
+                            PlantingScheduleId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            HarvestDate = new DateTime(2024, 12, 2, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(345),
+                            PlantingScheduleId = 2
+                        });
                 });
 
             modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.Notification", b =>
@@ -152,6 +181,22 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                     b.HasIndex("Cropid");
 
                     b.ToTable("PlantingSchedule");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cropid = 1,
+                            Location = "Field A",
+                            PlantingDate = new DateTime(2024, 10, 23, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(257)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cropid = 2,
+                            Location = "Greenhouse",
+                            PlantingDate = new DateTime(2024, 9, 23, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(312)
+                        });
                 });
 
             modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.Task", b =>
@@ -178,79 +223,66 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlantingScheduleId");
+
+                    b.ToTable("Task");
+                });
+
+            modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.WeatherData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Humidity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlantingScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rainfall")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Temperature")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PlantingScheduleId");
 
-                    b.HasIndex("UserId");
+                    b.ToTable("WeatherData");
 
-                    b.ToTable("Task");
-                });
-
-            modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Date = new DateTime(2024, 11, 22, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(371),
+                            Humidity = 60.0,
+                            Location = "Field A",
+                            PlantingScheduleId = 1,
+                            Rainfall = 5.0,
+                            Temperature = 25.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Date = new DateTime(2024, 11, 22, 18, 9, 30, 72, DateTimeKind.Local).AddTicks(375),
+                            Humidity = 70.0,
+                            Location = "Greenhouse",
+                            PlantingScheduleId = 2,
+                            Rainfall = 10.0,
+                            Temperature = 30.0
+                        });
                 });
 
             modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.GrowthHistory", b =>
@@ -303,25 +335,23 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         .WithMany()
                         .HasForeignKey("PlantingScheduleId");
 
-                    b.HasOne("DWA_AU24_Lab2_Group_11.Models.User", "User")
-                        .WithMany("Tasks")
-                        .HasForeignKey("UserId")
+                    b.Navigation("PlantingSchedule");
+                });
+
+            modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.WeatherData", b =>
+                {
+                    b.HasOne("DWA_AU24_Lab2_Group_11.Models.PlantingSchedule", "PlantingSchedule")
+                        .WithMany()
+                        .HasForeignKey("PlantingScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PlantingSchedule");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.Crop", b =>
                 {
                     b.Navigation("PlantingSchedules");
-                });
-
-            modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.User", b =>
-                {
-                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

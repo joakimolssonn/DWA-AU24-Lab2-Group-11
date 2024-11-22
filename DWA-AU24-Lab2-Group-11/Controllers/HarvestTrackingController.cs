@@ -61,8 +61,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         }
 
         // POST: HarvestTracking/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,PlantingScheduleId")] HarvestTracking harvestTracking)
@@ -81,7 +79,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                     return View(harvestTracking);
                 }
 
-                // No need to add HarvestDate manually; rely on ExpectedHarvestDate
                 _context.Add(harvestTracking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -89,6 +86,26 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
 
             ViewData["PlantingScheduleId"] = new SelectList(_context.PlantingSchedule, "Id", "Id");
             return View(harvestTracking);
+        }
+
+        // POST: HarvestTracking/MarkAsHarvested
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MarkAsHarvested(int id)
+        {
+            var harvestTracking = await _context.HarvestTracking.FindAsync(id);
+            if (harvestTracking == null)
+            {
+                return NotFound();
+            }
+
+            // Set HarvestDate to current date and time
+            harvestTracking.HarvestDate = DateTime.Now;
+
+            _context.Update(harvestTracking);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: HarvestTracking/Edit/5
@@ -110,11 +127,9 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         }
 
         // POST: HarvestTracking/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PlantingScheduleId")] HarvestTracking harvestTracking)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PlantingScheduleId,HarvestDate")] HarvestTracking harvestTracking)
         {
             if (id != harvestTracking.Id)
             {

@@ -6,9 +6,18 @@ namespace DWA_AU24_Lab2_Group_11.Models
     {
         public int Id { get; set; }
         [DataType(DataType.Date)]
-        public DateTime HarvestDate { get; set; } // Ta bort? Denna är kopplad med andra entiteter 
+        public DateTime? HarvestDate { get; set; } 
         public int PlantingScheduleId { get; set; }
         public PlantingSchedule? PlantingSchedule { get; set; }
+        public string HarvestStatus
+        {
+            get
+            {
+                return HarvestDate.HasValue
+                    ? HarvestDate.Value.ToShortDateString()
+                    : "Not harvested yet";
+            }
+        }
         public string? DaysUntilHarvest
         {
             get
