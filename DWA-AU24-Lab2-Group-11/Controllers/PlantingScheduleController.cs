@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DWA_AU24_Lab2_Group_11.Data;
 using DWA_AU24_Lab2_Group_11.Models;
 using Microsoft.AspNetCore.Authorization;
+using DWA_AU24_Lab2_Group_11.Services;
 
 namespace DWA_AU24_Lab2_Group_11.Controllers
 {
@@ -15,10 +16,12 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
     public class PlantingScheduleController : Controller
     {
         private readonly FarmTrackContext _context;
+        private readonly PlantingScheduleService _plantingScheduleService;
 
-        public PlantingScheduleController(FarmTrackContext context)
+        public PlantingScheduleController(FarmTrackContext context, PlantingScheduleService plantingScheduleService)
         {
             _context = context;
+            _plantingScheduleService = plantingScheduleService;
         }
 
         // GET: PlantingSchedule
@@ -59,15 +62,28 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Cropid,PlantingDate,OptimalPlantingDate,Location")] PlantingSchedule plantingSchedule)
+        public async Task<IActionResult> Create([Bind("Id,Cropid,PlantingDate,Location")] PlantingSchedule plantingSchedule)
         {
             if (ModelState.IsValid)
             {
+                // Fetch the associated crop
+                var crop = await _context.Crop.FindAsync(plantingSchedule.Cropid);
+                if (crop == null)
+                {
+                    return NotFound("Crop not found.");
+                }
+
+                // Calculate the optimal planting date
+                plantingSchedule.OptimalPlantingDate = await _plantingScheduleService.CalculateOptimalPlantingDateAsync(crop);
+
+                // Save the planting schedule with the calculated optimal planting date
                 _context.Add(plantingSchedule);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Cropid"] = new SelectList(_context.Crop, "Id", "Id", plantingSchedule.Cropid);
+
+            ViewData["Cropid"] = new SelectList(_context.Crop, "Id", "Name", plantingSchedule.Cropid);
             return View(plantingSchedule);
         }
 
@@ -93,7 +109,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Cropid,PlantingDate,OptimalPlantingDate,Location")] PlantingSchedule plantingSchedule)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Cropid,PlantingDate,Location")] PlantingSchedule plantingSchedule)
         {
             if (id != plantingSchedule.Id)
             {
@@ -104,6 +120,17 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
             {
                 try
                 {
+                    // Fetch the associated crop
+                    var crop = await _context.Crop.FindAsync(plantingSchedule.Cropid);
+                    if (crop == null)
+                    {
+                        return NotFound("Crop not found.");
+                    }
+
+                    // Recalculate the optimal planting date
+                    plantingSchedule.OptimalPlantingDate = await _plantingScheduleService.CalculateOptimalPlantingDateAsync(crop);
+
+                    // Update the planting schedule
                     _context.Update(plantingSchedule);
                     await _context.SaveChangesAsync();
                 }
@@ -120,6 +147,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["Cropid"] = new SelectList(_context.Crop, "Id", "Name", plantingSchedule.Cropid);
             return View(plantingSchedule);
         }

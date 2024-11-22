@@ -1,15 +1,26 @@
-﻿using DWA_AU24_Lab2_Group_11.Models;
+﻿using DWA_AU24_Lab2_Group_11.Data;
+using DWA_AU24_Lab2_Group_11.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DWA_AU24_Lab2_Group_11.Services
 {
     public class PlantingScheduleService
     {
-        public DateTime? CalculateOptimalPlantingDate(Crop crop, WeatherData[] weatherForecast)
+        private readonly FarmTrackContext _context;
+
+        public PlantingScheduleService(FarmTrackContext context)
         {
-          
+            _context = context;
+        }
+
+        public async Task<DateTime?> CalculateOptimalPlantingDateAsync(Crop crop)
+        {
+   
             crop.SetOptimalTemperatureRange();
 
-            foreach (var day in weatherForecast)
+            var weatherData = await _context.WeatherData.ToListAsync();
+
+            foreach (var day in weatherData)
             {
                 if (day.Temperature >= crop.OptimalTemperatureMin &&
                     day.Temperature <= crop.OptimalTemperatureMax)
@@ -21,4 +32,5 @@ namespace DWA_AU24_Lab2_Group_11.Services
             return null;  
         }
     }
+
 }
