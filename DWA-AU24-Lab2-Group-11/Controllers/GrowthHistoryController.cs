@@ -21,7 +21,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
             _context = context;
         }
 
-        // GET: GrowthHistory
+        // GET: GrowthHistory 
         public async Task<IActionResult> Index()
         {
             var farmTrackContext = _context.GrowthHistory.Include(g => g.PlantingSchedule);
