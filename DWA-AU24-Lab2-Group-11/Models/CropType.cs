@@ -9,7 +9,7 @@
         Legume = 50,
         Root = 40,
         Tuber = 23,
-        Nut = 120,
-        Cereal = 90
+        Nut = 121,
+        Cereal = 89
     }
 }
