@@ -190,5 +190,19 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         {
             return _context.PlantingSchedule.Any(e => e.Id == id);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOptimalPlantingDate(int cropId)
+        {
+            var crop = await _context.Crop.FindAsync(cropId);
+            if (crop == null)
+            {
+                return NotFound("Crop not found.");
+            }
+
+            var optimalPlantingDate = await _plantingScheduleService.CalculateOptimalPlantingDateAsync(crop);
+            return Json(new { OptimalPlantingDate = optimalPlantingDate?.ToString("yyyy-MM-dd") });
+        }
+
     }
 }
