@@ -21,9 +21,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.GrowingDurationInDays)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OptimalClimate)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -38,9 +35,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.GrowingDurationInDays)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptimalClimate)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

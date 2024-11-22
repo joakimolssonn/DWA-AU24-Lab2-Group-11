@@ -23,9 +23,33 @@ namespace DWA_AU24_Lab2_Group_11.Models
             }
         }
 
-        [StringLength(100)]
-        [Display(Name = "Optimal Climate")]
-        public string? OptimalClimate { get; set; }
+        public int OptimalTemperatureMin { get; set; }
+        public int OptimalTemperatureMax { get; set; }
+
+        public void SetOptimalTemperatureRange()
+        {
+            var (min, max) = GetOptimalTemperatureRange(Type);
+            OptimalTemperatureMin = min;
+            OptimalTemperatureMax = max;
+        }
+
+        private (int min, int max) GetOptimalTemperatureRange(CropType cropType)
+        {
+            return cropType switch
+            {
+                CropType.Grain => (15, 25),
+                CropType.Vegetable => (18, 30),
+                CropType.Fruit => (15, 24),
+                CropType.Herb => (18, 30),
+                CropType.Legume => (15, 30),
+                CropType.Root => (10, 22),
+                CropType.Tuber => (15, 22),
+                CropType.Nut => (17, 29),
+                CropType.Cereal => (15, 25),
+                _ => throw new ArgumentException("Unknown crop type")
+            };
+        }
+
         public ICollection<PlantingSchedule>? PlantingSchedules { get; set; }
     }
 }

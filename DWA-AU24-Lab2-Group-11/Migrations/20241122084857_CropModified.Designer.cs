@@ -4,6 +4,7 @@ using DWA_AU24_Lab2_Group_11.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DWA_AU24_Lab2_Group_11.Migrations
 {
     [DbContext(typeof(FarmTrackContext))]
-    partial class FarmTrackContextModelSnapshot : ModelSnapshot
+    [Migration("20241122084857_CropModified")]
+    partial class CropModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,15 +114,15 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         new
                         {
                             Id = 1,
-                            HarvestDate = new DateTime(2024, 12, 2, 10, 25, 55, 702, DateTimeKind.Local).AddTicks(6822),
-                            PlantingDate = new DateTime(2024, 11, 22, 10, 25, 55, 702, DateTimeKind.Local).AddTicks(6815),
+                            HarvestDate = new DateTime(2024, 12, 2, 9, 48, 56, 692, DateTimeKind.Local).AddTicks(7908),
+                            PlantingDate = new DateTime(2024, 11, 22, 9, 48, 56, 692, DateTimeKind.Local).AddTicks(7905),
                             PlantingScheduleId = 1
                         },
                         new
                         {
                             Id = 2,
-                            HarvestDate = new DateTime(2024, 12, 2, 10, 25, 55, 702, DateTimeKind.Local).AddTicks(6828),
-                            PlantingDate = new DateTime(2024, 11, 22, 10, 25, 55, 702, DateTimeKind.Local).AddTicks(6826),
+                            HarvestDate = new DateTime(2024, 12, 2, 9, 48, 56, 692, DateTimeKind.Local).AddTicks(7915),
+                            PlantingDate = new DateTime(2024, 11, 22, 9, 48, 56, 692, DateTimeKind.Local).AddTicks(7912),
                             PlantingScheduleId = 2
                         });
                 });
@@ -148,13 +151,13 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         new
                         {
                             Id = 1,
-                            HarvestDate = new DateTime(2024, 12, 2, 10, 25, 55, 702, DateTimeKind.Local).AddTicks(6844),
+                            HarvestDate = new DateTime(2024, 12, 2, 9, 48, 56, 692, DateTimeKind.Local).AddTicks(7931),
                             PlantingScheduleId = 1
                         },
                         new
                         {
                             Id = 2,
-                            HarvestDate = new DateTime(2024, 12, 2, 10, 25, 55, 702, DateTimeKind.Local).AddTicks(6848),
+                            HarvestDate = new DateTime(2024, 12, 2, 9, 48, 56, 692, DateTimeKind.Local).AddTicks(7935),
                             PlantingScheduleId = 2
                         });
                 });
@@ -219,14 +222,14 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                             Id = 1,
                             Cropid = 1,
                             Location = "Field A",
-                            PlantingDate = new DateTime(2024, 10, 23, 10, 25, 55, 702, DateTimeKind.Local).AddTicks(6752)
+                            PlantingDate = new DateTime(2024, 10, 23, 9, 48, 56, 692, DateTimeKind.Local).AddTicks(7843)
                         },
                         new
                         {
                             Id = 2,
                             Cropid = 2,
                             Location = "Greenhouse",
-                            PlantingDate = new DateTime(2024, 9, 23, 10, 25, 55, 702, DateTimeKind.Local).AddTicks(6799)
+                            PlantingDate = new DateTime(2024, 9, 23, 9, 48, 56, 692, DateTimeKind.Local).AddTicks(7888)
                         });
                 });
 
@@ -259,61 +262,6 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                     b.HasIndex("PlantingScheduleId");
 
                     b.ToTable("Task");
-                });
-
-            modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.WeatherData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("Humidity")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlantingScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Rainfall")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Temperature")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlantingScheduleId");
-
-                    b.ToTable("WeatherData");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(2024, 11, 22, 10, 25, 55, 702, DateTimeKind.Local).AddTicks(6864),
-                            Humidity = 60.0,
-                            Location = "Field A",
-                            PlantingScheduleId = 1,
-                            Rainfall = 5.0,
-                            Temperature = 25.0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = new DateTime(2024, 11, 22, 10, 25, 55, 702, DateTimeKind.Local).AddTicks(6869),
-                            Humidity = 70.0,
-                            Location = "Greenhouse",
-                            PlantingScheduleId = 2,
-                            Rainfall = 10.0,
-                            Temperature = 30.0
-                        });
                 });
 
             modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.GrowthHistory", b =>
@@ -365,17 +313,6 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                     b.HasOne("DWA_AU24_Lab2_Group_11.Models.PlantingSchedule", "PlantingSchedule")
                         .WithMany()
                         .HasForeignKey("PlantingScheduleId");
-
-                    b.Navigation("PlantingSchedule");
-                });
-
-            modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.WeatherData", b =>
-                {
-                    b.HasOne("DWA_AU24_Lab2_Group_11.Models.PlantingSchedule", "PlantingSchedule")
-                        .WithMany()
-                        .HasForeignKey("PlantingScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("PlantingSchedule");
                 });
