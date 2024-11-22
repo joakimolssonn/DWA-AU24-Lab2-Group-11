@@ -15,7 +15,7 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Cropid" class="control-label"></label>
-                <select asp-for="Cropid" class="form-control" asp-items="ViewBag.Cropid"></select>
+                <select asp-for="Cropid" class="form-control" asp-items="ViewBag.Cropid" id="CropSelector"></select>
                 <span asp-validation-for="Cropid" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="OptimalPlantingDate" class="control-label"></label>
-                <input asp-for="OptimalPlantingDate" class="form-control" />
+                <input asp-for="OptimalPlantingDate" class="form-control" readonly id="OptimalPlantingDate" />
                 <span asp-validation-for="OptimalPlantingDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -46,4 +46,30 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#CropSelector').change(function () {
+                var cropId = $(this).val(); // Get selected crop ID
+
+                if (cropId) {
+                    $.ajax({
+                        url: '@Url.Action("GetOptimalPlantingDate", "PlantingSchedule")',
+                        data: { cropId: cropId },
+                        success: function (response) {
+                            // Set the OptimalPlantingDate field with the valid date
+                            $('#OptimalPlantingDate').val(response);
+                        },
+                        error: function () {
+                            // Handle error cases
+                            $('#OptimalPlantingDate').val('');
+                        }
+                    });
+                } else {
+                    // Clear the field if no crop is selected
+                    $('#OptimalPlantingDate').val('');
+                }
+            });
+        });
+    </script>
 }
