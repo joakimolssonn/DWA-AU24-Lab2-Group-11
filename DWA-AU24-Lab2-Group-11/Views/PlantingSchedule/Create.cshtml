@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Cropid" class="control-label"></label>
-                <select asp-for="Cropid" class ="form-control" asp-items="ViewBag.Cropid"></select>
+                <select asp-for="Cropid" class="form-control" asp-items="ViewBag.Cropid" id="CropSelector"></select>
             </div>
             <div class="form-group">
                 <label asp-for="PlantingDate" class="control-label"></label>
@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="OptimalPlantingDate" class="control-label"></label>
-                <input asp-for="OptimalPlantingDate" class="form-control" readonly id="OptimalPlantingDate" />
+                <input asp-for="OptimalPlantingDate" class="form-control" readonly id="OptimalPlantingDate"/>
                 <span asp-validation-for="OptimalPlantingDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -44,29 +44,27 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#Cropid').change(function () {
+            $('#CropSelector').change(function () {
                 var cropId = $(this).val();
+
                 if (cropId) {
-                    // Make AJAX request to get the optimal planting date
                     $.ajax({
                         url: '@Url.Action("GetOptimalPlantingDate", "PlantingSchedule")',
                         data: { cropId: cropId },
-                        success: function (data) {
-                            if (data.OptimalPlantingDate) {
-                                $('#OptimalPlantingDate').val(data.OptimalPlantingDate);
-                            } else {
-                                $('#OptimalPlantingDate').val('No date available');
-                            }
+                        success: function (response) {
+                            // Directly set the response (plain date string) to the field
+                            $('#OptimalPlantingDate').val(response);
                         },
                         error: function () {
-                            $('#OptimalPlantingDate').val('Error calculating date');
+                            // Handle error cases
+                            $('#OptimalPlantingDate').val('');
                         }
                     });
                 } else {
-                    $('#OptimalPlantingDate').val('');
+                    $('#OptimalPlantingDate').val(''); // Clear the field if no crop is selected
                 }
             });
         });

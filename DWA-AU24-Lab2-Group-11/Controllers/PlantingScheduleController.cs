@@ -9,6 +9,7 @@ using DWA_AU24_Lab2_Group_11.Data;
 using DWA_AU24_Lab2_Group_11.Models;
 using Microsoft.AspNetCore.Authorization;
 using DWA_AU24_Lab2_Group_11.Services;
+using DWA_AU24_Lab2_Group_11.Helpers;
 
 namespace DWA_AU24_Lab2_Group_11.Controllers
 {
@@ -16,12 +17,10 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
     public class PlantingScheduleController : Controller
     {
         private readonly FarmTrackContext _context;
-        private readonly PlantingScheduleService _plantingScheduleService;
 
-        public PlantingScheduleController(FarmTrackContext context, PlantingScheduleService plantingScheduleService)
+        public PlantingScheduleController(FarmTrackContext context)
         {
             _context = context;
-            _plantingScheduleService = plantingScheduleService;
         }
 
         // GET: PlantingSchedule
@@ -73,10 +72,10 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                     return NotFound("Crop not found.");
                 }
 
-                // Calculate the optimal planting date
-                plantingSchedule.OptimalPlantingDate = await _plantingScheduleService.CalculateOptimalPlantingDateAsync(crop);
+                // Calculate the OptimalPlantingDate based on the selected crop type
+                plantingSchedule.OptimalPlantingDate = CropTypeHelper.GetOptimalPlantingDate(crop.Type);
 
-                // Save the planting schedule with the calculated optimal planting date
+                // Save the PlantingSchedule with the calculated OptimalPlantingDate
                 _context.Add(plantingSchedule);
                 await _context.SaveChangesAsync();
 
@@ -127,10 +126,10 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                         return NotFound("Crop not found.");
                     }
 
-                    // Recalculate the optimal planting date
-                    plantingSchedule.OptimalPlantingDate = await _plantingScheduleService.CalculateOptimalPlantingDateAsync(crop);
+                    // Recalculate the OptimalPlantingDate based on the selected crop type
+                    plantingSchedule.OptimalPlantingDate = CropTypeHelper.GetOptimalPlantingDate(crop.Type);
 
-                    // Update the planting schedule
+                    // Update the PlantingSchedule in the database
                     _context.Update(plantingSchedule);
                     await _context.SaveChangesAsync();
                 }
@@ -200,8 +199,9 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 return NotFound("Crop not found.");
             }
 
-            var optimalPlantingDate = await _plantingScheduleService.CalculateOptimalPlantingDateAsync(crop);
-            return Json(new { OptimalPlantingDate = optimalPlantingDate?.ToString("yyyy-MM-dd") });
+            var optimalPlantingDate = CropTypeHelper.GetOptimalPlantingDate(crop.Type);
+
+            return Content(optimalPlantingDate.ToString("yyyy-MM-dd"));
         }
 
     }
