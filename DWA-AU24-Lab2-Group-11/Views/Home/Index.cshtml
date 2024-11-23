@@ -2,33 +2,33 @@
     ViewData["Title"] = "Welcome Back!";
 }
 
-<!-- Modern Rubrik med uppfriskande stil -->
-<h1 style="font-family: fantasy, sans-serif;
+<!-- Modern Rubrik med vågig och uppfriskande stil -->
+<h1 style="font-family: 'Pacifico', cursive, fantasy, sans-serif;
            font-size: 3rem;
-           
            text-align: center;
-           text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);">
-    FarmTracker
+           text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+           color: var(--bs-primary);">
+    🌾 FarmTracker 🌾
 </h1>
 <b>&emsp;</b>
 
 <!-- Container för Notifications och Tasks -->
 <div style="display: flex; gap: 20px; align-items: flex-start;">
     <!-- Notifications -->
-    <div style="flex: 1; border-right: 2px solid #ccc; padding-right: 20px;">
-        <h2>Notifications</h2>
+    <div style="flex: 1; border-right: 2px solid var(--bs-light); padding-right: 20px;">
+        <h2 style="color: var(--bs-primary);">Notifications</h2>
         @if (ViewBag.Notifications != null && ((List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications).Any())
         {
             <ul style="list-style-type: none; padding: 0;">
                 @foreach (var notification in (List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications)
                 {
                     <li style="margin-bottom: 20px;">
-                        <p style="font-weight: bold; color: #333;">@notification.Message</p>
-                        <p style="font-weight: normal; color: #666;"><strong>Notification Date:</strong> @notification.NotificationDate.ToString("f")</p>
+                        <p style="font-weight: bold; color: var(--bs-dark);">@notification.Message</p>
+                        <p style="font-weight: normal; color: var(--bs-secondary);"><strong>Notification Date:</strong> @notification.NotificationDate.ToString("f")</p>
                         <form method="post" action="@Url.Action("MarkAsRead", "Home", new { id = notification.Id })">
                             <button type="submit" class="btn btn-info">Mark as Read</button>
                         </form>
-                        <hr style="border: 2px solid #333;" />
+                        <hr style="border: 2px solid var(--bs-secondary);" />
                     </li>
                 }
             </ul>
@@ -41,20 +41,20 @@
 
     <!-- Tasks -->
     <div style="flex: 1; padding-left: 20px;">
-        <h2>Tasks</h2>
+        <h2 style="color: var(--bs-primary);">Tasks</h2>
         @if (ViewBag.Tasks != null && ((List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks).Any())
         {
             <ul style="list-style-type: none; padding: 0;">
                 @foreach (var task in (List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks)
                 {
                     <li style="margin-bottom: 20px;">
-                        <p style="font-weight: bold; color: #333;"><strong>@task.TaskName</strong></p>
-                        <p style="font-weight: normal; color: #666;">@task.TaskDescription</p>
-                        <p style="font-weight: normal; color: #666;"><strong>Due Date:</strong> @task.TaskDate.ToString("f")</p>
+                        <p style="font-weight: bold; color: var(--bs-dark);"><strong>@task.TaskName</strong></p>
+                        <p style="font-weight: normal; color: var(--bs-secondary);">@task.TaskDescription</p>
+                        <p style="font-weight: normal; color: var(--bs-secondary);"><strong>Due Date:</strong> @task.TaskDate.ToString("f")</p>
                         <form method="post" action="@Url.Action("MarkTaskAsCompleted", "Home", new { id = task.Id })">
                             <button type="submit" class="btn btn-success">Mark as Completed</button>
                         </form>
-                        <hr style="border: 2px solid #333;" />
+                        <hr style="border: 2px solid var(--bs-secondary);" />
                     </li>
                 }
             </ul>
