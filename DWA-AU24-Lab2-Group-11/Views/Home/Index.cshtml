@@ -1,60 +1,67 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Welcome Back!";
 }
 
-<h1>@ViewData[$"Welcome Back!"]</h1>
+<!-- Modern Rubrik med uppfriskande stil -->
+<h1 style="font-family: fantasy, sans-serif;
+           font-size: 3rem;
+           
+           text-align: center;
+           text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);">
+    FarmTracker
+</h1>
+<b>&emsp;</b>
 
-<!-- Visar Notifications -->
-<div>
-    <h2>Notifications</h2>
+<!-- Container för Notifications och Tasks -->
+<div style="display: flex; gap: 20px; align-items: flex-start;">
+    <!-- Notifications -->
+    <div style="flex: 1; border-right: 2px solid #ccc; padding-right: 20px;">
+        <h2>Notifications</h2>
+        @if (ViewBag.Notifications != null && ((List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications).Any())
+        {
+            <ul style="list-style-type: none; padding: 0;">
+                @foreach (var notification in (List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications)
+                {
+                    <li style="margin-bottom: 20px;">
+                        <p style="font-weight: bold; color: #333;">@notification.Message</p>
+                        <p style="font-weight: normal; color: #666;"><strong>Notification Date:</strong> @notification.NotificationDate.ToString("f")</p>
+                        <form method="post" action="@Url.Action("MarkAsRead", "Home", new { id = notification.Id })">
+                            <button type="submit" class="btn btn-info">Mark as Read</button>
+                        </form>
+                        <hr style="border: 2px solid #333;" />
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No new notifications.</p>
+        }
+    </div>
 
-    @if (ViewBag.Notifications != null && ((List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications).Any())
-    {
-        <ul>
-            @foreach (var notification in (List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications)
-            {
-                <li>
-                    <p>@notification.Message</p>
-                    <p><strong>Notification Date:</strong> @notification.NotificationDate.ToString("f")</p>
-
-                    <!-- Mark as Read Button -->
-                    <form method="post" action="@Url.Action("MarkAsRead", "Home", new { id = notification.Id })">
-                        <button type="submit" class="btn btn-info">Mark as Read</button>
-                    </form>
-                </li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No new notifications.</p>
-    }
-</div>
-
-<!-- Visar Tasks -->
-<div>
-    <h2>Tasks</h2>
-
-    @if (ViewBag.Tasks != null && ((List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks).Any())
-    {
-        <ul>
-            @foreach (var task in (List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks)
-            {
-                <li>
-                    <p><strong>@task.TaskName</strong></p>
-                    <p>@task.TaskDescription</p>
-                    <p><strong>Due Date:</strong> @task.TaskDate.ToString("f")</p>
-
-                    <!-- Checkbox for marking task as completed -->
-                    <form method="post" action="@Url.Action("MarkTaskAsCompleted", "Home", new { id = task.Id })">                        
-                        <button type="submit" class="btn btn-success">Mark as Completed</button>
-                    </form>
-                </li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No upcoming tasks.</p>
-    }
+    <!-- Tasks -->
+    <div style="flex: 1; padding-left: 20px;">
+        <h2>Tasks</h2>
+        @if (ViewBag.Tasks != null && ((List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks).Any())
+        {
+            <ul style="list-style-type: none; padding: 0;">
+                @foreach (var task in (List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks)
+                {
+                    <li style="margin-bottom: 20px;">
+                        <p style="font-weight: bold; color: #333;"><strong>@task.TaskName</strong></p>
+                        <p style="font-weight: normal; color: #666;">@task.TaskDescription</p>
+                        <p style="font-weight: normal; color: #666;"><strong>Due Date:</strong> @task.TaskDate.ToString("f")</p>
+                        <form method="post" action="@Url.Action("MarkTaskAsCompleted", "Home", new { id = task.Id })">
+                            <button type="submit" class="btn btn-success">Mark as Completed</button>
+                        </form>
+                        <hr style="border: 2px solid #333;" />
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No upcoming tasks.</p>
+        }
+    </div>
 </div>
