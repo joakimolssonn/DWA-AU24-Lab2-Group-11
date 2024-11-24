@@ -69,38 +69,9 @@
     </div>
 </div>
 
-
-<!-- Tasks -->
-<div>
-    <h2>Tasks</h2>
-
-    @if (ViewBag.Tasks != null && ((List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks).Any())
-    {
-        <ul>
-            @foreach (var task in (List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks)
-            {
-                <li>
-                    <p><strong>@task.TaskName</strong></p>
-                    <p>@task.TaskDescription</p>
-                    <p><strong>Due Date:</strong> @task.TaskDate.ToString("f")</p>
-
-                    <!-- Checkbox for marking task as completed -->
-                    <form method="post" action="@Url.Action("MarkTaskAsCompleted", "Home", new { id = task.Id })">                        
-                        <button type="submit" class="btn btn-success">Mark as Completed</button>
-                    </form>
-                </li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No upcoming tasks.</p>
-    }
-</div>
-
 <!-- Weather Information -->
 <div>
-    <h2>Weather Information</h2>
+    <h2 style="color: var(--bs-primary);">Weather Information</h2>
     @if (weatherData != null)
     {
         <div class="card text-center" style="width: 18rem;">
