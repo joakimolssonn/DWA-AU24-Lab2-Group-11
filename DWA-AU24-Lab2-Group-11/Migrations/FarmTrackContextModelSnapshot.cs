@@ -127,13 +127,13 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         new
                         {
                             Id = 1,
-                            HarvestDate = new DateTime(2024, 12, 3, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1256),
+                            HarvestDate = new DateTime(2024, 12, 4, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7252),
                             PlantingScheduleId = 1
                         },
                         new
                         {
                             Id = 2,
-                            HarvestDate = new DateTime(2024, 12, 3, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1263),
+                            HarvestDate = new DateTime(2024, 12, 4, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7257),
                             PlantingScheduleId = 2
                         });
                 });
@@ -198,14 +198,14 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                             Id = 1,
                             Cropid = 1,
                             Location = "Field A",
-                            PlantingDate = new DateTime(2024, 10, 24, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1169)
+                            PlantingDate = new DateTime(2024, 10, 25, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7178)
                         },
                         new
                         {
                             Id = 2,
                             Cropid = 2,
                             Location = "Greenhouse",
-                            PlantingDate = new DateTime(2024, 9, 24, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1223)
+                            PlantingDate = new DateTime(2024, 9, 25, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7227)
                         });
                 });
 
@@ -254,45 +254,20 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                     b.Property<double>("Humidity")
                         .HasColumnType("float");
 
-                    b.Property<string>("Location")
+                    b.Property<string>("Icon")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PlantingScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Rainfall")
-                        .HasColumnType("float");
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Temperature")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlantingScheduleId");
-
                     b.ToTable("WeatherData");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(2024, 11, 23, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1294),
-                            Humidity = 60.0,
-                            Location = "Field A",
-                            PlantingScheduleId = 1,
-                            Rainfall = 5.0,
-                            Temperature = 25.0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = new DateTime(2024, 11, 23, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1300),
-                            Humidity = 70.0,
-                            Location = "Greenhouse",
-                            PlantingScheduleId = 2,
-                            Rainfall = 10.0,
-                            Temperature = 30.0
-                        });
                 });
 
             modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.GrowthHistory", b =>
@@ -344,17 +319,6 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                     b.HasOne("DWA_AU24_Lab2_Group_11.Models.PlantingSchedule", "PlantingSchedule")
                         .WithMany()
                         .HasForeignKey("PlantingScheduleId");
-
-                    b.Navigation("PlantingSchedule");
-                });
-
-            modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.WeatherData", b =>
-                {
-                    b.HasOne("DWA_AU24_Lab2_Group_11.Models.PlantingSchedule", "PlantingSchedule")
-                        .WithMany()
-                        .HasForeignKey("PlantingScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("PlantingSchedule");
                 });
