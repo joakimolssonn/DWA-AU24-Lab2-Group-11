@@ -51,7 +51,7 @@
     </dl>
 
     <!-- Delete confirmation form -->
-    <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
         <div class="form-group">
             <button type="submit" class="btn btn-danger">Delete</button>
             <a asp-action="Index" class="btn btn-secondary">Back to List</a>
