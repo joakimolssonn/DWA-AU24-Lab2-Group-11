@@ -6,12 +6,8 @@
         public DateTime Date { get; set; }
         public double Temperature { get; set; }
         public double Humidity { get; set; }
-        public double Rainfall { get; set; }
-        public string? Location { get; set; }
-
-        // Navigation property to PlantingSchedule
-        public int PlantingScheduleId { get; set; }
-        public PlantingSchedule PlantingSchedule { get; set; }
-
+        public string Location { get; set; }
+        public string Icon { get; set; } // Add this property
     }
+
 }

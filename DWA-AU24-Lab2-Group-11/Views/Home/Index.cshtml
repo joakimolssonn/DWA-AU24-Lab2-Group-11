@@ -1,4 +1,5 @@
-﻿@{
+@{
+    WeatherData weatherData = ViewBag.WeatherData as WeatherData;
     ViewData["Title"] = "Welcome Back!";
 }
 
@@ -11,6 +12,7 @@
     🌾 FarmTracker 🌾
 </h1>
 <b>&emsp;</b>
+
 
 <!-- Container för Notifications och Tasks -->
 <div style="display: flex; gap: 20px; align-items: flex-start;">
@@ -39,6 +41,7 @@
         }
     </div>
 
+
     <!-- Tasks -->
     <div style="flex: 1; padding-left: 20px;">
         <h2 style="color: var(--bs-primary);">Tasks</h2>
@@ -65,3 +68,55 @@
         }
     </div>
 </div>
+
+
+<!-- Tasks -->
+<div>
+    <h2>Tasks</h2>
+
+    @if (ViewBag.Tasks != null && ((List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks).Any())
+    {
+        <ul>
+            @foreach (var task in (List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks)
+            {
+                <li>
+                    <p><strong>@task.TaskName</strong></p>
+                    <p>@task.TaskDescription</p>
+                    <p><strong>Due Date:</strong> @task.TaskDate.ToString("f")</p>
+
+                    <!-- Checkbox for marking task as completed -->
+                    <form method="post" action="@Url.Action("MarkTaskAsCompleted", "Home", new { id = task.Id })">                        
+                        <button type="submit" class="btn btn-success">Mark as Completed</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No upcoming tasks.</p>
+    }
+</div>
+
+<!-- Weather Information -->
+<div>
+    <h2>Weather Information</h2>
+    @if (weatherData != null)
+    {
+        <div class="card text-center" style="width: 18rem;">
+            <img src="@string.Format("https://openweathermap.org/img/wn/{0}@2x.png", weatherData.Icon)" class="card-img-top weather-icon" alt="Weather Icon">
+            <div class="card-body">
+                <h5 class="card-title">@weatherData.Location</h5>
+                <p class="card-text">
+                    <strong>Temperature:</strong> @weatherData.Temperature°C<br>
+                    <strong>Humidity:</strong> @weatherData.Humidity%
+                </p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Unable to fetch weather data at this time.</p>
+    }
+</div>
+
