@@ -24,8 +24,8 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         // GET: GrowthHistory 
         public async Task<IActionResult> Index()
         {
-            var farmTrackContext = _context.GrowthHistory.Include(g => g.PlantingSchedule);
-            return View(await farmTrackContext.ToListAsync());
+            var growthHistories = await _context.GrowthHistory.ToListAsync();
+            return View(growthHistories);
         }
 
         // GET: GrowthHistory/Details/5
@@ -48,26 +48,66 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         }
 
         // GET: GrowthHistory/Create
+        // GET: GrowthHistory/Create
         public IActionResult Create()
         {
-            ViewData["PlantingScheduleId"] = new SelectList(_context.Set<PlantingSchedule>(), "Id", "Id");
+            // Query harvested schedules
+            var harvestedSchedules = _context.HarvestTracking
+                .Where(ht => ht.HarvestDate.HasValue) // Only harvested schedules
+                .Select(ht => new
+                {
+                    ht.PlantingScheduleId,
+                    DisplayName = $"{ht.PlantingSchedule.Crop.Name} (Planted: {ht.PlantingSchedule.PlantingDate.ToShortDateString()})"
+                })
+                .ToList();
+
+            // Pass to ViewBag
+            ViewBag.PlantingScheduleId = new SelectList(harvestedSchedules, "PlantingScheduleId", "DisplayName");
+
             return View();
         }
+
 
         // POST: GrowthHistory/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PlantingScheduleId,PlantingDate,HarvestDate,Notes")] GrowthHistory growthHistory)
+        public async Task<IActionResult> Create([Bind("PlantingScheduleId,Notes")] GrowthHistory growthHistory)
         {
             if (ModelState.IsValid)
             {
+                // Fetch the associated PlantingSchedule and ensure it has an associated Crop and HarvestTracking with HarvestDate
+                var plantingSchedule = await _context.PlantingSchedule
+                    .Include(ps => ps.Crop)  // Include the Crop to avoid null reference
+                    .FirstOrDefaultAsync(ps => ps.Id == growthHistory.PlantingScheduleId);
+
+                var harvestTracking = await _context.HarvestTracking
+                    .FirstOrDefaultAsync(ht => ht.PlantingScheduleId == growthHistory.PlantingScheduleId);
+
+                if (plantingSchedule == null || harvestTracking == null || !harvestTracking.HarvestDate.HasValue)
+                {
+                    // If PlantingSchedule or HarvestTracking is not found, or HarvestDate is not set, return an error
+                    ModelState.AddModelError("", "Invalid Planting Schedule or Harvest Date not set.");
+                    return View(growthHistory);
+                }
+
+                // Populate GrowthHistory fields
+                growthHistory.CropName = plantingSchedule.Crop?.Name;  // Get Crop name from the PlantingSchedule
+                growthHistory.PlantingDate = plantingSchedule.PlantingDate;
+                growthHistory.HarvestDate = harvestTracking.HarvestDate.Value;
+
+                // Calculate DaysBetween as the number of days between PlantingDate and HarvestDate
+                growthHistory.DaysBetween = (growthHistory.HarvestDate - growthHistory.PlantingDate).Days;
+
+                // Save the new GrowthHistory entry
                 _context.Add(growthHistory);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PlantingScheduleId"] = new SelectList(_context.Set<PlantingSchedule>(), "Id", "Id", growthHistory.PlantingScheduleId);
+
+            // If the model state is invalid, return to the view with the current data
             return View(growthHistory);
         }
 
@@ -84,16 +124,18 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
             {
                 return NotFound();
             }
-            ViewData["PlantingScheduleId"] = new SelectList(_context.Set<PlantingSchedule>(), "Id", "Id", growthHistory.PlantingScheduleId);
+
             return View(growthHistory);
         }
+
+
 
         // POST: GrowthHistory/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PlantingScheduleId,PlantingDate,HarvestDate,Notes")] GrowthHistory growthHistory)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Notes")] GrowthHistory growthHistory)
         {
             if (id != growthHistory.Id)
             {
@@ -104,7 +146,17 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
             {
                 try
                 {
-                    _context.Update(growthHistory);
+                    // Fetch the existing GrowthHistory entity
+                    var existingGrowthHistory = await _context.GrowthHistory.FindAsync(id);
+                    if (existingGrowthHistory == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Update only the Notes field
+                    existingGrowthHistory.Notes = growthHistory.Notes;
+
+                    // Save changes
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -120,9 +172,11 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PlantingScheduleId"] = new SelectList(_context.Set<PlantingSchedule>(), "Id", "Id", growthHistory.PlantingScheduleId);
+
             return View(growthHistory);
         }
+
+
 
         // GET: GrowthHistory/Delete/5
         public async Task<IActionResult> Delete(int? id)
