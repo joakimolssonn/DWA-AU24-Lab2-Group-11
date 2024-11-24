@@ -1,25 +1,19 @@
 ﻿@model IEnumerable<DWA_AU24_Lab2_Group_11.Models.GrowthHistory>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Growth History";
 }
 
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table-dark">
             <th>
                 @Html.DisplayNameFor(model => model.PlantingSchedule)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlantingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HarvestDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Notes)
@@ -32,12 +26,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.PlantingSchedule.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlantingDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HarvestDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Notes)

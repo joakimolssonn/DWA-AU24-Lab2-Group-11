@@ -77,6 +77,13 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CropName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DaysBetween")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("HarvestDate")
                         .HasColumnType("datetime2");
 
@@ -94,22 +101,6 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                     b.HasIndex("PlantingScheduleId");
 
                     b.ToTable("GrowthHistory");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            HarvestDate = new DateTime(2024, 12, 2, 13, 42, 42, 832, DateTimeKind.Local).AddTicks(621),
-                            PlantingDate = new DateTime(2024, 11, 22, 13, 42, 42, 832, DateTimeKind.Local).AddTicks(616),
-                            PlantingScheduleId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            HarvestDate = new DateTime(2024, 12, 2, 13, 42, 42, 832, DateTimeKind.Local).AddTicks(627),
-                            PlantingDate = new DateTime(2024, 11, 22, 13, 42, 42, 832, DateTimeKind.Local).AddTicks(624),
-                            PlantingScheduleId = 2
-                        });
                 });
 
             modelBuilder.Entity("DWA_AU24_Lab2_Group_11.Models.HarvestTracking", b =>
@@ -120,7 +111,7 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("HarvestDate")
+                    b.Property<DateTime?>("HarvestDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("PlantingScheduleId")
@@ -136,13 +127,13 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         new
                         {
                             Id = 1,
-                            HarvestDate = new DateTime(2024, 12, 2, 13, 42, 42, 832, DateTimeKind.Local).AddTicks(643),
+                            HarvestDate = new DateTime(2024, 12, 3, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1256),
                             PlantingScheduleId = 1
                         },
                         new
                         {
                             Id = 2,
-                            HarvestDate = new DateTime(2024, 12, 2, 13, 42, 42, 832, DateTimeKind.Local).AddTicks(647),
+                            HarvestDate = new DateTime(2024, 12, 3, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1263),
                             PlantingScheduleId = 2
                         });
                 });
@@ -207,14 +198,14 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                             Id = 1,
                             Cropid = 1,
                             Location = "Field A",
-                            PlantingDate = new DateTime(2024, 10, 23, 13, 42, 42, 832, DateTimeKind.Local).AddTicks(551)
+                            PlantingDate = new DateTime(2024, 10, 24, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1169)
                         },
                         new
                         {
                             Id = 2,
                             Cropid = 2,
                             Location = "Greenhouse",
-                            PlantingDate = new DateTime(2024, 9, 23, 13, 42, 42, 832, DateTimeKind.Local).AddTicks(599)
+                            PlantingDate = new DateTime(2024, 9, 24, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1223)
                         });
                 });
 
@@ -285,7 +276,7 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2024, 11, 22, 13, 42, 42, 832, DateTimeKind.Local).AddTicks(664),
+                            Date = new DateTime(2024, 11, 23, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1294),
                             Humidity = 60.0,
                             Location = "Field A",
                             PlantingScheduleId = 1,
@@ -295,7 +286,7 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2024, 11, 22, 13, 42, 42, 832, DateTimeKind.Local).AddTicks(669),
+                            Date = new DateTime(2024, 11, 23, 12, 15, 0, 437, DateTimeKind.Local).AddTicks(1300),
                             Humidity = 70.0,
                             Location = "Greenhouse",
                             PlantingScheduleId = 2,

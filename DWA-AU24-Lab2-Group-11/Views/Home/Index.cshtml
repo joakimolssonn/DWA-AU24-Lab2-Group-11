@@ -1,36 +1,74 @@
-﻿@{
-    ViewData["Title"] = "Home";
+@{
     WeatherData weatherData = ViewBag.WeatherData as WeatherData;
+    ViewData["Title"] = "Welcome Back!";
 }
 
-<h1>@ViewData["Title"]</h1>
+<!-- Modern Rubrik med vågig och uppfriskande stil -->
+<h1 style="font-family: 'Pacifico', cursive, fantasy, sans-serif;
+           font-size: 3rem;
+           text-align: center;
+           text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+           color: var(--bs-primary);">
+    🌾 FarmTracker 🌾
+</h1>
+<b>&emsp;</b>
 
-<!-- Notifications -->
-<div>
-    <h2>Notifications</h2>
 
-    @if (ViewBag.Notifications != null && ((List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications).Any())
-    {
-        <ul>
-            @foreach (var notification in (List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications)
-            {
-                <li>
-                    <p>@notification.Message</p>
-                    <p><strong>Notification Date:</strong> @notification.NotificationDate.ToString("f")</p>
+<!-- Container för Notifications och Tasks -->
+<div style="display: flex; gap: 20px; align-items: flex-start;">
+    <!-- Notifications -->
+    <div style="flex: 1; border-right: 2px solid var(--bs-light); padding-right: 20px;">
+        <h2 style="color: var(--bs-primary);">Notifications</h2>
+        @if (ViewBag.Notifications != null && ((List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications).Any())
+        {
+            <ul style="list-style-type: none; padding: 0;">
+                @foreach (var notification in (List<DWA_AU24_Lab2_Group_11.Models.Notification>)ViewBag.Notifications)
+                {
+                    <li style="margin-bottom: 20px;">
+                        <p style="font-weight: bold; color: var(--bs-dark);">@notification.Message</p>
+                        <p style="font-weight: normal; color: var(--bs-secondary);"><strong>Notification Date:</strong> @notification.NotificationDate.ToString("f")</p>
+                        <form method="post" action="@Url.Action("MarkAsRead", "Home", new { id = notification.Id })">
+                            <button type="submit" class="btn btn-info">Mark as Read</button>
+                        </form>
+                        <hr style="border: 2px solid var(--bs-secondary);" />
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No new notifications.</p>
+        }
+    </div>
 
-                    <!-- Mark as Read Button -->
-                    <form method="post" action="@Url.Action("MarkAsRead", "Home", new { id = notification.Id })">
-                        <button type="submit" class="btn btn-info">Mark as Read</button>
-                    </form>
-                </li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No new notifications.</p>
-    }
+
+    <!-- Tasks -->
+    <div style="flex: 1; padding-left: 20px;">
+        <h2 style="color: var(--bs-primary);">Tasks</h2>
+        @if (ViewBag.Tasks != null && ((List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks).Any())
+        {
+            <ul style="list-style-type: none; padding: 0;">
+                @foreach (var task in (List<DWA_AU24_Lab2_Group_11.Models.Task>)ViewBag.Tasks)
+                {
+                    <li style="margin-bottom: 20px;">
+                        <p style="font-weight: bold; color: var(--bs-dark);"><strong>@task.TaskName</strong></p>
+                        <p style="font-weight: normal; color: var(--bs-secondary);">@task.TaskDescription</p>
+                        <p style="font-weight: normal; color: var(--bs-secondary);"><strong>Due Date:</strong> @task.TaskDate.ToString("f")</p>
+                        <form method="post" action="@Url.Action("MarkTaskAsCompleted", "Home", new { id = task.Id })">
+                            <button type="submit" class="btn btn-success">Mark as Completed</button>
+                        </form>
+                        <hr style="border: 2px solid var(--bs-secondary);" />
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No upcoming tasks.</p>
+        }
+    </div>
 </div>
+
 
 <!-- Tasks -->
 <div>
@@ -81,3 +119,4 @@
         <p>Unable to fetch weather data at this time.</p>
     }
 </div>
+

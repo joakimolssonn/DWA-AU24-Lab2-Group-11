@@ -16,35 +16,58 @@
         <dd class="col-sm-10">
             @Model.PlantingSchedule.Id
         </dd>
+
         <dt class="col-sm-2">
             Crop Name
         </dt>
         <dd class="col-sm-10">
             @Model.PlantingSchedule.Crop?.Name
         </dd>
+
         <dt class="col-sm-2">
             Planting Date
         </dt>
         <dd class="col-sm-10">
             @Model.PlantingSchedule.PlantingDate.ToShortDateString()
         </dd>
+
         <dt class="col-sm-2">
             Expected Harvest Date
         </dt>
         <dd class="col-sm-10">
             @Model.PlantingSchedule.ExpectedHarvestDate?.ToShortDateString()
         </dd>
+
         <dt class="col-sm-2">
-            Countdown to Harvest (Days)
+            Countdown to Harvest
         </dt>
         <dd class="col-sm-10">
-            @(Model.PlantingSchedule.ExpectedHarvestDate.HasValue
-                ? (Model.PlantingSchedule.ExpectedHarvestDate.Value - DateTime.Now).Days
-                : "N/A")
+            @Model.DaysUntilHarvest
+        </dd>
+
+        <dt class="col-sm-2">
+            Harvest Status
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.HarvestDate.HasValue)
+            {
+                <span class="text-success">Harvested on @Model.HarvestDate.Value.ToShortDateString()</span>
+            }
+            else
+            {
+                <span class="text-warning">Not harvested yet</span>
+            }
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (!Model.HarvestDate.HasValue)
+    {
+        <form asp-action="MarkAsHarvested" asp-route-id="@Model.Id" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-success">Mark as Harvested</button>
+        </form>
+    }
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
