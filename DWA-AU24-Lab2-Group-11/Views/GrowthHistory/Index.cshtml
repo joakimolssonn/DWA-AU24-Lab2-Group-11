@@ -4,38 +4,35 @@
     ViewData["Title"] = "Growth History";
 }
 
-<h1>Index</h1>
+<h1>Growth History</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
-<table class="table table-hover">
+<table class="table">
     <thead>
-        <tr class="table-dark">
-            <th>
-                @Html.DisplayNameFor(model => model.PlantingSchedule)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th></th>
+        <tr>
+            <th>Crop Name</th>
+            <th>Planting Date</th>
+            <th>Harvest Date</th>
+            <th>Days</th>
+            <th>Notes</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlantingSchedule.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CropName</td>
+                <td>@item.PlantingDate.ToShortDateString()</td>
+                <td>@item.HarvestDate.ToShortDateString()</td>
+                <td>@item.DaysBetween</td>
+                <td>@item.Notes</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<a asp-action="Create" class="btn btn-success">Add New Growth History</a>
