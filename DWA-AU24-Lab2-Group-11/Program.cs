@@ -22,7 +22,7 @@ namespace DWA_AU24_Lab2_Group_11
 
 
             builder.Services.AddHostedService<NotificationService>();
-            builder.Services.AddScoped<WeatherApiService>();
+            builder.Services.AddHttpClient<WeatherApiService>();
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 

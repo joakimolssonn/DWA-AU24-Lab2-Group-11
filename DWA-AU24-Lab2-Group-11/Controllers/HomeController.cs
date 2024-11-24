@@ -14,15 +14,17 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly FarmTrackContext _context;
+        private readonly WeatherApiService _weatherApiService;
 
-        public HomeController(ILogger<HomeController> logger, FarmTrackContext context)
+        public HomeController(ILogger<HomeController> logger, FarmTrackContext context, WeatherApiService weatherApiService)
         {
             _logger = logger;
             _context = context;
+            _weatherApiService = weatherApiService;
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             // Fetch all unread notifications (ensure it's not null)
             var notifications = _context.Notification
@@ -44,9 +46,23 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 _logger.LogWarning("No tasks found for reminder.");
             }
 
+            WeatherData weatherData;
+            try
+            {
+                // Fetch weather data (replace coordinates with actual values as needed)
+                weatherData = await _weatherApiService.FetchWeatherAsync(51.5074, -0.1278); // London coordinates
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to fetch weather data.");
+                weatherData = null;
+            }
+
+
             // Pass data to the view using ViewBag
             ViewBag.Notifications = notifications;
             ViewBag.Tasks = tasks;
+            ViewBag.WeatherData = weatherData;
 
             return View(); // Notifications as the main model
         }
@@ -88,5 +104,31 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetWeatherByCoordinates(double latitude, double longitude)
+        {
+            try
+            {
+                // Fetch weather data using the coordinates
+                var weatherData = await _weatherApiService.FetchWeatherAsync(latitude, longitude);
+
+                // Return weather data as JSON, including the weather icon
+                return Json(new
+                {
+                    location = weatherData.Location,
+                    temperature = weatherData.Temperature,
+                    humidity = weatherData.Humidity,
+                    icon = $"https://openweathermap.org/img/wn/{weatherData.Icon}@2x.png" // Full icon URL
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to fetch weather data.");
+                return BadRequest("Unable to fetch weather data.");
+            }
+        }
+
+
     }
 }

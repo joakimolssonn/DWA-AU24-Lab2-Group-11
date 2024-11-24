@@ -1,10 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Home";
+    WeatherData weatherData = ViewBag.WeatherData as WeatherData;
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<!-- Visar Notifications -->
+<!-- Notifications -->
 <div>
     <h2>Notifications</h2>
 
@@ -31,7 +32,7 @@
     }
 </div>
 
-<!-- Visar Tasks -->
+<!-- Tasks -->
 <div>
     <h2>Tasks</h2>
 
@@ -56,5 +57,27 @@
     else
     {
         <p>No upcoming tasks.</p>
+    }
+</div>
+
+<!-- Weather Information -->
+<div>
+    <h2>Weather Information</h2>
+    @if (weatherData != null)
+    {
+        <div class="card text-center" style="width: 18rem;">
+            <img src="@string.Format("https://openweathermap.org/img/wn/{0}@2x.png", weatherData.Icon)" class="card-img-top weather-icon" alt="Weather Icon">
+            <div class="card-body">
+                <h5 class="card-title">@weatherData.Location</h5>
+                <p class="card-text">
+                    <strong>Temperature:</strong> @weatherData.Temperature°C<br>
+                    <strong>Humidity:</strong> @weatherData.Humidity%
+                </p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Unable to fetch weather data at this time.</p>
     }
 </div>

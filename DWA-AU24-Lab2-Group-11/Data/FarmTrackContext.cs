@@ -51,12 +51,6 @@ namespace DWA_AU24_Lab2_Group_11.Data
                 new HarvestTracking { Id = 1, PlantingScheduleId = 1, HarvestDate = DateTime.Now.AddDays(10)},
                 new HarvestTracking { Id = 2, PlantingScheduleId = 2, HarvestDate = DateTime.Now.AddDays(10)}
             );
-
-            // Seeding data for WeatherData
-            modelBuilder.Entity<WeatherData>().HasData(
-                new WeatherData { Id = 1, PlantingScheduleId = 1, Date = DateTime.Now, Temperature = 25, Humidity = 60, Rainfall = 5, Location = "Field A" },
-                new WeatherData { Id = 2, PlantingScheduleId = 2, Date = DateTime.Now, Temperature = 30, Humidity = 70, Rainfall = 10, Location = "Greenhouse" }
-            );
         }
     }
 }
