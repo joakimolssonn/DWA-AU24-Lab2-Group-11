@@ -4,6 +4,7 @@ using DWA_AU24_Lab2_Group_11.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DWA_AU24_Lab2_Group_11.Migrations
 {
     [DbContext(typeof(FarmTrackContext))]
-    partial class FarmTrackContextModelSnapshot : ModelSnapshot
+    [Migration("20241124111717_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,15 +131,12 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         {
                             Id = 1,
                             HarvestDate = new DateTime(2024, 12, 4, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7252),
-
                             PlantingScheduleId = 1
                         },
                         new
                         {
                             Id = 2,
-
                             HarvestDate = new DateTime(2024, 12, 4, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7257),
-
                             PlantingScheduleId = 2
                         });
                 });
@@ -201,16 +201,13 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                             Id = 1,
                             Cropid = 1,
                             Location = "Field A",
-
+                            PlantingDate = new DateTime(2024, 10, 25, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7178)
                         },
                         new
                         {
                             Id = 2,
                             Cropid = 2,
                             Location = "Greenhouse",
-
-                            PlantingDate = new DateTime(2024, 9, 26, 7, 47, 13, 464, DateTimeKind.Local).AddTicks(6554)
-
                             PlantingDate = new DateTime(2024, 9, 25, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7227)
                         });
                 });
