@@ -50,7 +50,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
             try
             {
                 // Fetch weather data (replace coordinates with actual values as needed)
-                weatherData = await _weatherApiService.FetchWeatherAsync(51.5074, -0.1278); // London coordinates
+                weatherData = await _weatherApiService.FetchWeatherAsync(57.708870, 11.974560); // Gothenburg coordinates
             }
             catch (Exception ex)
             {
@@ -104,31 +104,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetWeatherByCoordinates(double latitude, double longitude)
-        {
-            try
-            {
-                // Fetch weather data using the coordinates
-                var weatherData = await _weatherApiService.FetchWeatherAsync(latitude, longitude);
-
-                // Return weather data as JSON, including the weather icon
-                return Json(new
-                {
-                    location = weatherData.Location,
-                    temperature = weatherData.Temperature,
-                    humidity = weatherData.Humidity,
-                    icon = $"https://openweathermap.org/img/wn/{weatherData.Icon}@2x.png" // Full icon URL
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to fetch weather data.");
-                return BadRequest("Unable to fetch weather data.");
-            }
-        }
-
 
     }
 }
