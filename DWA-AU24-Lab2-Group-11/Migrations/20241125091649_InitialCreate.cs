@@ -170,8 +170,8 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                 columns: new[] { "Id", "Cropid", "Location", "OptimalPlantingDate", "PlantingDate" },
                 values: new object[,]
                 {
-                    { 1, 1, "Field A", null, new DateTime(2024, 10, 25, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7178) },
-                    { 2, 2, "Greenhouse", null, new DateTime(2024, 9, 25, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7227) }
+                    { 1, 1, "Field A", null, new DateTime(2024, 10, 26, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9384) },
+                    { 2, 2, "Greenhouse", null, new DateTime(2024, 9, 26, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9427) }
                 });
 
             migrationBuilder.InsertData(
@@ -179,8 +179,8 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                 columns: new[] { "Id", "HarvestDate", "PlantingScheduleId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 12, 4, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7252), 1 },
-                    { 2, new DateTime(2024, 12, 4, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7257), 2 }
+                    { 1, new DateTime(2024, 12, 5, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9454), 1 },
+                    { 2, new DateTime(2024, 12, 5, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9459), 2 }
                 });
 
             migrationBuilder.CreateIndex(

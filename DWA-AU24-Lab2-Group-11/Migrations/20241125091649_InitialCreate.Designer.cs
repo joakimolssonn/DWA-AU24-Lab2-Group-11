@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DWA_AU24_Lab2_Group_11.Migrations
 {
     [DbContext(typeof(FarmTrackContext))]
-    [Migration("20241125064714_InitialCreate")]
+    [Migration("20241125091649_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -130,13 +130,13 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         new
                         {
                             Id = 1,
-                            HarvestDate = new DateTime(2024, 12, 5, 7, 47, 13, 464, DateTimeKind.Local).AddTicks(6575),
+                            HarvestDate = new DateTime(2024, 12, 5, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9454),
                             PlantingScheduleId = 1
                         },
                         new
                         {
                             Id = 2,
-                            HarvestDate = new DateTime(2024, 12, 5, 7, 47, 13, 464, DateTimeKind.Local).AddTicks(6581),
+                            HarvestDate = new DateTime(2024, 12, 5, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9459),
                             PlantingScheduleId = 2
                         });
                 });
@@ -201,14 +201,14 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                             Id = 1,
                             Cropid = 1,
                             Location = "Field A",
-                            PlantingDate = new DateTime(2024, 10, 26, 7, 47, 13, 464, DateTimeKind.Local).AddTicks(6507)
+                            PlantingDate = new DateTime(2024, 10, 26, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9384)
                         },
                         new
                         {
                             Id = 2,
                             Cropid = 2,
                             Location = "Greenhouse",
-                            PlantingDate = new DateTime(2024, 9, 26, 7, 47, 13, 464, DateTimeKind.Local).AddTicks(6554)
+                            PlantingDate = new DateTime(2024, 9, 26, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9427)
                         });
                 });
 

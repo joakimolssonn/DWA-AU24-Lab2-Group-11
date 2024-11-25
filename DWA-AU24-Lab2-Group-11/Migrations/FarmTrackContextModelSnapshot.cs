@@ -127,16 +127,13 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                         new
                         {
                             Id = 1,
-                            HarvestDate = new DateTime(2024, 12, 4, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7252),
-
+                            HarvestDate = new DateTime(2024, 12, 5, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9454),
                             PlantingScheduleId = 1
                         },
                         new
                         {
                             Id = 2,
-
-                            HarvestDate = new DateTime(2024, 12, 4, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7257),
-
+                            HarvestDate = new DateTime(2024, 12, 5, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9459),
                             PlantingScheduleId = 2
                         });
                 });
@@ -201,17 +198,14 @@ namespace DWA_AU24_Lab2_Group_11.Migrations
                             Id = 1,
                             Cropid = 1,
                             Location = "Field A",
-
+                            PlantingDate = new DateTime(2024, 10, 26, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9384)
                         },
                         new
                         {
                             Id = 2,
                             Cropid = 2,
                             Location = "Greenhouse",
-
-                            PlantingDate = new DateTime(2024, 9, 26, 7, 47, 13, 464, DateTimeKind.Local).AddTicks(6554)
-
-                            PlantingDate = new DateTime(2024, 9, 25, 12, 17, 16, 923, DateTimeKind.Local).AddTicks(7227)
+                            PlantingDate = new DateTime(2024, 9, 26, 10, 16, 48, 969, DateTimeKind.Local).AddTicks(9427)
                         });
                 });
 
