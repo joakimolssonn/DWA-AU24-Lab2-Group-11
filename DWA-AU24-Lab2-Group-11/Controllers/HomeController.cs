@@ -66,28 +66,26 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 }
             }
 
-
-            // Pass data to the view using ViewBag
             ViewBag.Notifications = notifications;
             ViewBag.Tasks = tasks;
             ViewBag.WeatherData = weatherData;
-            ViewBag.FirstName = user?.FirstName; // Pass FirstName to ViewBag
+            ViewBag.FirstName = user?.FirstName; 
 
-            return View(); // Notifications as the main model
+            return View(); 
         }
 
-        // Mark notification as read
+
         [HttpPost]
         public IActionResult MarkAsRead(int id)
         {
             var notification = _context.Notification.Find(id);
             if (notification != null)
             {
-                notification.IsRead = true; // Mark the notification as read
-                _context.SaveChanges(); // Save changes to the database
+                notification.IsRead = true; 
+                _context.SaveChanges(); 
             }
 
-            return RedirectToAction("Index"); // Redirect to the Index page after marking as read
+            return RedirectToAction("Index"); 
         }
 
         [HttpPost]

@@ -48,10 +48,8 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         }
 
         // GET: GrowthHistory/Create
-        // GET: GrowthHistory/Create
         public IActionResult Create()
         {
-            // Query harvested schedules
             var harvestedSchedules = _context.HarvestTracking
                 .Where(ht => ht.HarvestDate.HasValue) // Only harvested schedules
                 .Select(ht => new
@@ -61,7 +59,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 })
                 .ToList();
 
-            // Pass to ViewBag
             ViewBag.PlantingScheduleId = new SelectList(harvestedSchedules, "PlantingScheduleId", "DisplayName");
 
             return View();
@@ -69,8 +66,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
 
 
         // POST: GrowthHistory/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PlantingScheduleId,Notes")] GrowthHistory growthHistory)
@@ -100,14 +95,11 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 // Calculate DaysBetween as the number of days between PlantingDate and HarvestDate
                 growthHistory.DaysBetween = (growthHistory.HarvestDate - growthHistory.PlantingDate).Days;
 
-                // Save the new GrowthHistory entry
                 _context.Add(growthHistory);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
-
-            // If the model state is invalid, return to the view with the current data
             return View(growthHistory);
         }
 
@@ -131,8 +123,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
 
 
         // POST: GrowthHistory/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Notes")] GrowthHistory growthHistory)
@@ -156,7 +146,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                     // Update only the Notes field
                     existingGrowthHistory.Notes = growthHistory.Notes;
 
-                    // Save changes
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

@@ -26,7 +26,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         {
             var harvestTrackings = await _context.HarvestTracking
                 .Include(h => h.PlantingSchedule)
-                    .ThenInclude(p => p.Crop) // Include Crop for name and duration
+                    .ThenInclude(p => p.Crop) 
                 .ToListAsync();
 
             return View(harvestTrackings);
