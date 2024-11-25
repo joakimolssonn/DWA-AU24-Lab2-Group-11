@@ -107,6 +107,17 @@ namespace DWA_AU24_Lab2_Group_11.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
 
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "Location")]
+            public string Location { get; set; } // Dropdown for location
+
+            [Display(Name = "Latitude")]
+            public double Latitude { get; set; } // Latitude of the location
+
+            [Display(Name = "Longitude")]
+            public double Longitude { get; set; } // Longitude of the location
+         
         }
 
 
@@ -120,12 +131,39 @@ namespace DWA_AU24_Lab2_Group_11.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                // Add hardcoded location and coordinates
+                user.Location = Input.Location; // Assuming Input.Location is already added in InputModel
+                switch (Input.Location)
+                {
+                    case "Boras":
+                        user.Latitude = 57.7210;
+                        user.Longitude = 12.9401;
+                        break;
+                    case "Stockholm":
+                        user.Latitude = 59.3293;
+                        user.Longitude = 18.0686;
+                        break;
+                    case "Gothenburg":
+                        user.Latitude = 57.7089;
+                        user.Longitude = 11.9746;
+                        break;
+                    case "Malmo":
+                        user.Latitude = 55.6050;
+                        user.Longitude = 13.0038;
+                        break;
+                    default:
+                        ModelState.AddModelError("", "Invalid location selected.");
+                        return Page();
+                }
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -154,6 +192,7 @@ namespace DWA_AU24_Lab2_Group_11.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -163,6 +202,7 @@ namespace DWA_AU24_Lab2_Group_11.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
 
         private User CreateUser()
         {

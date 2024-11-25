@@ -4,6 +4,7 @@ using DWA_AU24_Lab2_Group_11.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DWA_AU24_Lab2_Group_11.Migrations.DWA_AU24_Lab2_Group_11
 {
     [DbContext(typeof(DWA_AU24_Lab2_Group_11Context))]
-    partial class DWA_AU24_Lab2_Group_11ContextModelSnapshot : ModelSnapshot
+    [Migration("20241125065033_UpdateIdentitySchema")]
+    partial class UpdateIdentitySchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
