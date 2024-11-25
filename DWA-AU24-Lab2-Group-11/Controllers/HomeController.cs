@@ -29,6 +29,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
 
         public async Task<IActionResult> Index()
         {
+
             // Fetch all unread notifications (ensure it's not null)
             var notifications = _context.Notification
                                          .Where(n => !n.IsRead)
@@ -70,6 +71,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
             ViewBag.Notifications = notifications;
             ViewBag.Tasks = tasks;
             ViewBag.WeatherData = weatherData;
+            ViewBag.FirstName = user?.FirstName; // Pass FirstName to ViewBag
 
             return View(); // Notifications as the main model
         }
