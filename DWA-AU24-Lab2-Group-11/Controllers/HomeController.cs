@@ -2,6 +2,7 @@ using DWA_AU24_Lab2_Group_11.Data;
 using DWA_AU24_Lab2_Group_11.Models;
 using DWA_AU24_Lab2_Group_11.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -15,12 +16,14 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly FarmTrackContext _context;
         private readonly WeatherApiService _weatherApiService;
+        private readonly UserManager<User> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, FarmTrackContext context, WeatherApiService weatherApiService)
+        public HomeController(ILogger<HomeController> logger, FarmTrackContext context, WeatherApiService weatherApiService, UserManager<User> userManager)
         {
             _logger = logger;
             _context = context;
             _weatherApiService = weatherApiService;
+            _userManager = userManager;
         }
 
 
@@ -46,16 +49,20 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 _logger.LogWarning("No tasks found for reminder.");
             }
 
-            WeatherData weatherData;
-            try
+            var user = await _userManager.GetUserAsync(User);
+            WeatherData weatherData = null;
+
+            if (user != null)
             {
-                // Fetch weather data (replace coordinates with actual values as needed)
-                weatherData = await _weatherApiService.FetchWeatherAsync(57.708870, 11.974560); // Gothenburg coordinates
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to fetch weather data.");
-                weatherData = null;
+                try
+                {
+                    // Fetch weather data using user's coordinates
+                    weatherData = await _weatherApiService.FetchWeatherAsync(user.Latitude, user.Longitude);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to fetch weather data.");
+                }
             }
 
 
