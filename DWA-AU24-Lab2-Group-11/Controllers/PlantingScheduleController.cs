@@ -57,15 +57,12 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         }
 
         // POST: PlantingSchedule/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Cropid,PlantingDate,Location")] PlantingSchedule plantingSchedule)
         {
             if (ModelState.IsValid)
             {
-                // Fetch the associated crop
                 var crop = await _context.Crop.FindAsync(plantingSchedule.Cropid);
                 if (crop == null)
                 {
@@ -75,7 +72,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
                 // Calculate the OptimalPlantingDate based on the selected crop type
                 plantingSchedule.OptimalPlantingDate = CropTypeHelper.GetOptimalPlantingDate(crop.Type);
 
-                // Save the PlantingSchedule with the calculated OptimalPlantingDate
                 _context.Add(plantingSchedule);
                 await _context.SaveChangesAsync();
 
@@ -104,8 +100,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         }
 
         // POST: PlantingSchedule/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Cropid,PlantingDate,Location")] PlantingSchedule plantingSchedule)

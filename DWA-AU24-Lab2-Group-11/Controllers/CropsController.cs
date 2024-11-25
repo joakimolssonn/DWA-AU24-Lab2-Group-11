@@ -52,8 +52,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         }
 
         // POST: Crops/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Type,GrowingDurationInDays,OptimalClimate")] Crop crop)
@@ -84,8 +82,6 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         }
 
         // POST: Crops/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,GrowingDurationInDays,OptimalClimate")] Crop crop)
