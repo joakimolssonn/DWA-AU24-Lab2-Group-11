@@ -29,23 +29,7 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         }
 
         // GET: GrowthHistory/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var growthHistory = await _context.GrowthHistory
-                .Include(g => g.PlantingSchedule)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (growthHistory == null)
-            {
-                return NotFound();
-            }
-
-            return View(growthHistory);
-        }
+       
 
         // GET: GrowthHistory/Create
         public IActionResult Create()
