@@ -28,6 +28,12 @@ To get started with the project, follow these steps:
 4. Build the project
 5. Run the application
 
+
+Login info:
+
+Username: Admin@example.com  
+Password: Admin@123
+
 ## Contributing
 
 Contributions are welcome! Please submit a pull request or open an issue to discuss changes.
