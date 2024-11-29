@@ -14,7 +14,7 @@ namespace DWA_AU24_Lab2_Group_11.Services
         {
             _httpClient = httpClient;
         }
-
+        // Method to get weather data for a specific location.
         public async Task<WeatherData> FetchWeatherAsync(double latitude, double longitude)
         {
             string url = $"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={ApiKey}&units=metric";
