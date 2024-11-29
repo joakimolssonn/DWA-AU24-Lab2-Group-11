@@ -9,7 +9,7 @@ namespace DWA_AU24_Lab2_Group_11.Services
     {
         private readonly HttpClient _httpClient;
         private const string ApiKey = "2c973819ecc18939caa003f4aa51e902";
-
+        // Constructor to inject HttpClient and IConfiguration services.
         public WeatherApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
