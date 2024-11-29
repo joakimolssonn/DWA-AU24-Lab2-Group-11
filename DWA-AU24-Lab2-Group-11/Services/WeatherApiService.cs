@@ -4,6 +4,7 @@ using System.Text.Json;
 
 namespace DWA_AU24_Lab2_Group_11.Services
 {
+    // This service handles communication with the external Weather API.
     public class WeatherApiService
     {
         private readonly HttpClient _httpClient;
