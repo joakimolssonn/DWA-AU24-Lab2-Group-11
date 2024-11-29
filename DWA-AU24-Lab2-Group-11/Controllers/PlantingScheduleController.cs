@@ -170,14 +170,23 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var plantingSchedule = await _context.PlantingSchedule.FindAsync(id);
-            if (plantingSchedule != null)
+
+            // Check if the planting schedule is associated with any tasks
+            var isAssociatedWithTask = await _context.Task
+                .AnyAsync(t => t.PlantingScheduleId == id);
+
+            if (isAssociatedWithTask)
             {
-                _context.PlantingSchedule.Remove(plantingSchedule);
+                // Return a message to the user indicating that the planting schedule cannot be deleted
+                TempData["ErrorMessage"] = "You cannot remove this planting schedule, there is a task associated with it.";
+                return RedirectToAction(nameof(Index));
             }
 
+            _context.PlantingSchedule.Remove(plantingSchedule);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool PlantingScheduleExists(int id)
         {

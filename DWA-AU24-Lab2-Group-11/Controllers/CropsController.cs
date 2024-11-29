@@ -138,11 +138,20 @@ namespace DWA_AU24_Lab2_Group_11.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var crop = await _context.Crop.FindAsync(id);
-            if (crop != null)
+
+            // Check if the crop is associated with any planting schedules that have tasks
+            var isAssociatedWithTask = await _context.PlantingSchedule
+                .Include(ps => ps.Tasks)
+                .AnyAsync(ps => ps.Cropid == id && ps.Tasks.Any());
+
+            if (isAssociatedWithTask)
             {
-                _context.Crop.Remove(crop);
+                // Return a message to the user indicating that the crop cannot be deleted
+                TempData["ErrorMessage"] = "You cannot remove this crop, there is a task associated with this crop.";
+                return RedirectToAction(nameof(Index));
             }
 
+            _context.Crop.Remove(crop);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
