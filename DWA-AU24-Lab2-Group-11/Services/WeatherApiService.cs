@@ -4,18 +4,20 @@ using System.Text.Json;
 
 namespace DWA_AU24_Lab2_Group_11.Services
 {
+    // This service handles communication with the external Weather API.
     public class WeatherApiService
     {
         private readonly HttpClient _httpClient;
         private const string ApiKey = "2c973819ecc18939caa003f4aa51e902";
-
+        // Constructor to inject HttpClient and IConfiguration services.
         public WeatherApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
-
+        // Method to get weather data for a specific location.
         public async Task<WeatherData> FetchWeatherAsync(double latitude, double longitude)
         {
+            // Build the request URL using the latitude and longitude.
             string url = $"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={ApiKey}&units=metric";
 
             var response = await _httpClient.GetAsync(url);
