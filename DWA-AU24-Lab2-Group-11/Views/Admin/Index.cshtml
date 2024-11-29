@@ -1,0 +1,33 @@
+﻿@model DWA_AU24_Lab2_Group_11.Views.Admin.IndexModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<DWA_AU24_Lab2_Group_11.Models.User> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<h3>Admin Page</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@string.Join(", ", await UserManager.GetRolesAsync(user))</td>
+                <td>
+                    <form method="post" asp-action="MakeAdmin" asp-route-id="@user.Id">
+                        <button type="submit" class="btn btn-primary">Make Admin</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
